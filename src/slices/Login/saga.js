@@ -19,10 +19,10 @@ function* signInSuccess(action) {
 
 function* signInFailure(action) {
     console.log(action);
-    action.meta.form.setErrors({
-        email: 'Invalid email or password',
-        password: 'Invalid email or password'
-    })
+    // action.meta.form.setErrors({
+    //     email: 'Invalid email or password',
+    //     password: 'Invalid email or password'
+    // })
     
 }
 
@@ -30,7 +30,7 @@ function* makeListeners() {
     yield(takeEvery(x => x.type === 'SUCCESS' && [REQUEST_SIGNIN, REQUEST_SIGNUP].includes(x.meta.type), signInSuccess));
     yield(takeEvery(x => x.type === 'SUCCESS' && [REQUEST_SIGNIN, REQUEST_SIGNUP].includes(x.meta.type), signInSuccess));
 
-    yield(takeEvery(x => x.type === 'FAILURE' && [REQUEST_SIGNIN, REQUEST_SIGNUP].includes(x.meta.type), signInFailure));
+    yield(takeEvery(x => x.type === 'FAILURE' && x.meta.type === REQUEST_SIGNIN, signInFailure));
 }
 
 export default makeListeners;
