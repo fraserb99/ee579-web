@@ -50,31 +50,28 @@ export const SignUpPage = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-                <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-                Sign Up
-            </Typography>
-            <SignUpForm />
-            <Grid container>
-                <Grid item xs>
-                    <Link to="/forgot-password" variant="body2">
-                        Forgot password?
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/signin' variant="body2">
-                        {"Already have an account? Sign In"}
-                    </Link>
-                </Grid>
-            </Grid>
-        </div>
-        <Box mt={8}>
-            <Copyright />
-        </Box>
+      <CssBaseline />
+      <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+              Sign Up
+          </Typography>
+          <SignUpForm />
+          <Grid container>
+              <Grid item xs>
+                  <Link to="/forgot-password" variant="body2">
+                      Forgot password?
+                  </Link>
+              </Grid>
+              <Grid item>
+                  <Link to='/signin' variant="body2">
+                      {"Already have an account? Sign In"}
+                  </Link>
+              </Grid>
+          </Grid>
+      </div>
     </Container>
   )
 }

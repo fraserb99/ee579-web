@@ -62,6 +62,14 @@ export const SignUpForm = enhance(({handleSubmit}) => {
                 id="password"
                 autoComplete="current-password"
             />
+            <TextRow
+                required
+                name="passwordConfirm"
+                label="Confirm Password"
+                type="password"
+                id="passwordConfirm"
+                autoComplete="current-password"
+            />
             <Button
                 type="submit"
                 fullWidth

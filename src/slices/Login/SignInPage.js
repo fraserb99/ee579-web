@@ -70,9 +70,6 @@ export const SignInPage = () => {
                 </Grid>
             </Grid>
         </div>
-        <Box mt={8}>
-            <Copyright />
-        </Box>
     </Container>
   )
 }

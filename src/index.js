@@ -13,11 +13,19 @@ import { apiMiddleware } from 'redux-api-middleware';
 import normalizeApiResponseMiddleware from './infrastructure/api/normalizeApiResponseMiddleware';
 import formErrorHandlingMiddleware from './infrastructure/api/formErrorHandlingMiddleware';
 import { formatState } from './infrastructure/redux/core';
-import { initialState } from './slices/Login/reducer';
 import { createBrowserHistory } from 'history';
+import { rootSaga } from './infrastructure/redux/rootSaga';
+import createSagaMiddleware from 'redux-saga';
 
 export const history = createBrowserHistory();
 
+var existingStore = localStorage.getItem('store');
+const initialState = existingStore ? 
+  JSON.parse(localStorage.getItem('store'))
+  :
+  {};
+
+const sagaMiddleware = createSagaMiddleware();
 const createStoreWithMiddleware = applyMiddleware(
   routerMiddleware(history),
   setContentTypeMiddleware,
@@ -25,9 +33,11 @@ const createStoreWithMiddleware = applyMiddleware(
   apiMiddleware,
   normalizeApiResponseMiddleware,
   formErrorHandlingMiddleware,
-  // sagaMiddleware,
+  sagaMiddleware,
   )(createStore);
 const store = createStoreWithMiddleware(rootReducer(history), formatState(initialState), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <React.StrictMode>
