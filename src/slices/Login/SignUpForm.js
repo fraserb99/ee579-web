@@ -21,7 +21,9 @@ export const userFormSchema = Yup.object().shape({
         .required('Email is required')
         .email('Please enter a valid email address'),
     password: Yup.string()
-        .required('Password is required')
+        .required('Password is required'),
+    passwordConfirm: Yup.string()
+        .oneOf([Yup.ref('password')], 'Passwords must match')
 });
 
 const enhance = compose(

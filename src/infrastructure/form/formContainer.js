@@ -1,6 +1,7 @@
 import { compose, withHandlers } from "recompose";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withRouter } from "react-router-dom";
 
 export const formContainer = (
 	title,
@@ -9,6 +10,7 @@ export const formContainer = (
 	apiAction,
 	actions,
 ) => compose(
+	withRouter,
 	connect((state, props) => ({
 		title,
 		submitText,
@@ -18,6 +20,6 @@ export const formContainer = (
 		submitActions: bindActionCreators({ apiAction }, dispatch),
 	})),
 	withHandlers({
-		onSubmit: ({ actions, push, returnUrl, ...props }) => (values, form) => {console.log(returnUrl);return apiAction(actions)(values, form, returnUrl)}
+		onSubmit: ({ actions, push, returnUrl, history, ...props }) => (values, form) => {console.log(history);return apiAction(actions)(values, form, history)}
 	}),
 )

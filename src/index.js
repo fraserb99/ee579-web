@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import { applyMiddleware, createStore } from '@reduxjs/toolkit';
+import { applyMiddleware, createStore } from 'redux';
 import { rootReducer } from './infrastructure/redux/rootReducer';
 import { routerMiddleware } from 'connected-react-router';
 import { setContentTypeMiddleware } from './infrastructure/api/setContentTypeMiddleware';
@@ -13,11 +13,8 @@ import { apiMiddleware } from 'redux-api-middleware';
 import normalizeApiResponseMiddleware from './infrastructure/api/normalizeApiResponseMiddleware';
 import formErrorHandlingMiddleware from './infrastructure/api/formErrorHandlingMiddleware';
 import { formatState } from './infrastructure/redux/core';
-import { createBrowserHistory } from 'history';
 import { rootSaga } from './infrastructure/redux/rootSaga';
 import createSagaMiddleware from 'redux-saga';
-
-export const history = createBrowserHistory();
 
 var existingStore = localStorage.getItem('store');
 const initialState = existingStore ? 
@@ -27,7 +24,6 @@ const initialState = existingStore ?
 
 const sagaMiddleware = createSagaMiddleware();
 const createStoreWithMiddleware = applyMiddleware(
-  routerMiddleware(history),
   setContentTypeMiddleware,
   injectAuthMiddleware,
   apiMiddleware,
@@ -35,7 +31,7 @@ const createStoreWithMiddleware = applyMiddleware(
   formErrorHandlingMiddleware,
   sagaMiddleware,
   )(createStore);
-const store = createStoreWithMiddleware(rootReducer(history), formatState(initialState), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStoreWithMiddleware(rootReducer, formatState(initialState), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 sagaMiddleware.run(rootSaga);
 
