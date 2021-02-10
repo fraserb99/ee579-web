@@ -15,10 +15,14 @@ import formErrorHandlingMiddleware from './infrastructure/api/formErrorHandlingM
 import { formatState } from './infrastructure/redux/core';
 import { rootSaga } from './infrastructure/redux/rootSaga';
 import createSagaMiddleware from 'redux-saga';
+import { Map } from 'immutable';
+import { injectTenantMiddleware } from './infrastructure/api/injectTenantMiddleware';
 
 var existingStore = localStorage.getItem('store');
+
+console.log(JSON.parse(existingStore));
 const initialState = existingStore ? 
-  JSON.parse(localStorage.getItem('store'))
+  { session: new Map({ ...JSON.parse(existingStore).session }) }
   :
   {};
 
@@ -26,12 +30,19 @@ const sagaMiddleware = createSagaMiddleware();
 const createStoreWithMiddleware = applyMiddleware(
   setContentTypeMiddleware,
   injectAuthMiddleware,
+  injectTenantMiddleware,
   apiMiddleware,
   normalizeApiResponseMiddleware,
   formErrorHandlingMiddleware,
   sagaMiddleware,
   )(createStore);
-const store = createStoreWithMiddleware(rootReducer, formatState(initialState), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStoreWithMiddleware(rootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+store.subscribe(() => {
+  const state = store.getState();
+  const session = state.session.toJS();
+  localStorage.setItem('store', JSON.stringify({ session }));
+});
 
 sagaMiddleware.run(rootSaga);
 

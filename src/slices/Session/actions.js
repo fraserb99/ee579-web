@@ -9,3 +9,8 @@ export const REQUEST_SIGNUP = 'REQUEST_SIGNUP';
 export function signUp(payload, form, history) {
     return apiCall(REQUEST_SIGNUP, appendUrl('users/create'), { form, history }, payload, 'POST')
 }
+
+export const CLEAR_SESSION = 'CLEAR_SESSION';
+export function clearSession() {
+    return { type: CLEAR_SESSION }
+}
