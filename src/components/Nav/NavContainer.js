@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,10 +18,17 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { Dashboard, DeveloperBoard, Layers, People, SwapHorizRounded } from '@material-ui/icons';
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { ArrowDropDown, Dashboard, DeveloperBoard, Layers, People, ScatterPlot, SwapHorizRounded } from '@material-ui/icons';
+import { Accordion, AccordionSummary, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
 import { useSession } from '../../slices/Session/hooks';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { selectTenants } from '../../slices/Tenants/selectors';
+import { getTenants } from '../../slices/Tenants/actions';
+import { compose, lifecycle } from 'recompose';
+import { bindActionCreators } from 'redux';
+import * as tenantActions from '../../slices/Tenants/actions';
+import { useCurrentTenant } from '../../slices/Tenants/hooks';
 
 const drawerWidth = 240;
 
@@ -35,11 +42,18 @@ const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
+    // justifyContent: 'flex-end',
+    // padding: '0 8px',
     ...theme.mixins.toolbar,
   },
   appBar: {
+    width: '100%',
+    marginLeft: 0,
+    [theme.breakpoints.up('sm')]: {
+      
+      marginLeft: theme.spacing(8),
+    width: `calc(100% - ${theme.spacing(8)}px)`,
+    },
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -78,9 +92,9 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing(7),
+    width: 0,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
+      width: theme.spacing(8),
     },
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -102,20 +116,53 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+  listItemIcon: {
+    paddingLeft: theme.spacing(0.5)
+  },
+  brand: {
+    fontWeight: 600
+  }
 }));
 
-export const NavContainer = ({children}) => {
+const enhance = compose(
+  connect(
+    state => ({}),
+    dispatch => ({
+      tenantActions: bindActionCreators(tenantActions, dispatch)
+    })
+  ),
+  lifecycle({
+    componentDidMount: function componentDidMount() {
+      this.props.tenantActions.getTenants();
+    }
+  })
+)
+
+export const NavContainer = enhance(({children}) => {
   const session = useSession();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const location = useLocation();
+  const history = useHistory();
+  
+  const currentTenant = useCurrentTenant();
+  const tenants = useSelector(selectTenants).filter(x => x.id !== currentTenant.id);
+
+  const [open, setOpen] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuOpen = Boolean(anchorEl);
+
+  const handleDrawerToggle = () => {
+    setOpen(!open);
   };
-  const handleDrawerClose = () => {
-    setOpen(false);
+
+  const handleMenuOpen = (e) => {
+    setAnchorEl(e.currentTarget);
+  }
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  if (!session.token)
+
+  if (!session.get('token'))
     return <Redirect to='/signin' />
 
   return (
@@ -127,19 +174,43 @@ export const NavContainer = ({children}) => {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            onClick={handleDrawerToggle}
+            className={clsx(classes.menuButton)}
           >
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+            {currentTenant && currentTenant.name}
+            <IconButton onClick={handleMenuOpen} color='inherit'>
+              <ArrowDropDown />
+            </IconButton>
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <Menu
+            id="long-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={menuOpen}
+            onClose={handleMenuClose}
+            PaperProps={{
+              style: {
+                maxHeight: 300,
+                width: '40ch',
+              },
+            }}
+            transformOrigin={{
+              vertical: 0,
+              horizontal: -40,
+            }}
+          >
+            <MenuItem disabled>
+              {currentTenant && currentTenant.name}
+            </MenuItem>
+            {tenants && tenants.map(x => 
+              <MenuItem>
+                {x.name}
+              </MenuItem>
+            )}
+          </Menu>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -150,39 +221,62 @@ export const NavContainer = ({children}) => {
         open={open}
       >
         <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
+          <ListItem>
+            <ListItemIcon>
+              <ScatterPlot fontSize='large' color='secondary' />
+            </ListItemIcon>
+            <ListItemText primary="EE579 IFTTT" primaryTypographyProps={{className: classes.brand}} />
+          </ListItem>
         </div>
         <Divider />
         <List>
           <div>
-            <ListItem button>
-              <ListItemIcon>
+            <ListItem 
+              button 
+              selected={location.pathname === '/'} 
+              onClick={() => history.push('/')}
+            >
+              <ListItemIcon className={classes.listItemIcon}>
                 <Dashboard />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon>
+            <ListItem 
+              button 
+              selected={location.pathname.startsWith('/rules')} 
+              onClick={() => history.push('/rules')}
+            >
+              <ListItemIcon className={classes.listItemIcon}>
                 <SwapHorizRounded />
               </ListItemIcon>
               <ListItemText primary="Rules" />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon>
+            <ListItem 
+              button 
+              selected={location.pathname.startsWith('/devices')} 
+              onClick={() => history.push('/devices')}
+            >
+              <ListItemIcon className={classes.listItemIcon}>
                 <DeveloperBoard />
               </ListItemIcon>
               <ListItemText primary="Devices" />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon>
+            <ListItem 
+              button 
+              selected={location.pathname.startsWith('/users')} 
+              onClick={() => history.push('/users')}
+            >
+              <ListItemIcon className={classes.listItemIcon}>
                 <People />
               </ListItemIcon>
               <ListItemText primary="Users" />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon>
+            <ListItem 
+              button 
+              selected={location.pathname.startsWith('/groups')} 
+              onClick={() => history.push('/groups')}
+            >
+              <ListItemIcon className={classes.listItemIcon}>
                 <Layers />
               </ListItemIcon>
               <ListItemText primary="Device Groups" />
@@ -198,4 +292,4 @@ export const NavContainer = ({children}) => {
       </main>
     </div>
   );
-}
+});

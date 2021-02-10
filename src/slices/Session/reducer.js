@@ -6,6 +6,7 @@ export const initialState = new Map({
     user: null,
     token: null,
 	state: '',
+	currentTenant: null
 });
 
 const apiHandlers = {
@@ -19,7 +20,8 @@ const handlers = {
 		.set('token', action.payload.token)
 		.set('refreshToken', action.payload.refreshToken),
 	'SET_CURRENT_USER': (state, action) => state.set('user', action.payload),
-	'CLEAR_SESSION': state => initialState
+	'CLEAR_SESSION': state => initialState,
+	'SET_CURRENT_TENANT': (state, action) => state.set('currentTenant', action.payload)
 }
 
 const apiReducer = ApiReducer([REQUEST_SIGNIN, REQUEST_SIGNUP], initialState, apiHandlers);

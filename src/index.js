@@ -33,6 +33,12 @@ const createStoreWithMiddleware = applyMiddleware(
   )(createStore);
 const store = createStoreWithMiddleware(rootReducer, formatState(initialState), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
+store.subscribe(() => {
+  const state = store.getState();
+  const session = state.session.toJS();
+  localStorage.setItem('store', JSON.stringify({ session }));
+});
+
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
