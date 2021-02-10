@@ -16,6 +16,7 @@ import { formatState } from './infrastructure/redux/core';
 import { rootSaga } from './infrastructure/redux/rootSaga';
 import createSagaMiddleware from 'redux-saga';
 import { Map } from 'immutable';
+import { injectTenantMiddleware } from './infrastructure/api/injectTenantMiddleware';
 
 var existingStore = localStorage.getItem('store');
 
@@ -29,6 +30,7 @@ const sagaMiddleware = createSagaMiddleware();
 const createStoreWithMiddleware = applyMiddleware(
   setContentTypeMiddleware,
   injectAuthMiddleware,
+  injectTenantMiddleware,
   apiMiddleware,
   normalizeApiResponseMiddleware,
   formErrorHandlingMiddleware,
