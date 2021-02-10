@@ -4,8 +4,9 @@ import { Counter } from './features/counter/Counter';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
-import { SignInPage } from './slices/Login/SignInPage';
-import { SignUpPage } from './slices/Login/SignUpPage';
+import { SignInPage } from './slices/Session/SignInPage';
+import { SignUpPage } from './slices/Session/SignUpPage';
+import { NavContainer } from './components/Nav/NavContainer';
 
 function App({history}) {
   console.log(history);
@@ -15,7 +16,9 @@ function App({history}) {
           <Switch>
             <Route path='/signin' component={SignInPage} />
             <Route path='/signup' component={SignUpPage} />
-            <Route path='/' exact component={SignUpPage} />
+            <Route path='/' component={NavContainer}>
+              
+            </Route>
           </Switch>
       </BrowserRouter>
     </div>

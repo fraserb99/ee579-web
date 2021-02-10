@@ -1,5 +1,5 @@
 import { all } from '@redux-saga/core/effects';
-import session from '../../slices/Login/saga';
+import session from '../../slices/Session/saga';
 
 
 export function* rootSaga() {
