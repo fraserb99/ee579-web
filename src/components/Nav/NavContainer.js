@@ -18,9 +18,9 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { ArrowDropDown, Dashboard, DeveloperBoard, Layers, People, ScatterPlot, SwapHorizRounded } from '@material-ui/icons';
-import { Accordion, AccordionSummary, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
-import { useSession } from '../../slices/Session/hooks';
+import { AccountCircle, ArrowDropDown, Dashboard, DeveloperBoard, ExitToApp, ExpandLess, ExpandMore, Layers, People, ScatterPlot, Settings, SwapHorizRounded } from '@material-ui/icons';
+import { Accordion, AccordionSummary, Collapse, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { useCurrentUser, useSession } from '../../slices/Session/hooks';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { selectTenants } from '../../slices/Tenants/selectors';
@@ -29,6 +29,7 @@ import { compose, lifecycle } from 'recompose';
 import { bindActionCreators } from 'redux';
 import * as tenantActions from '../../slices/Tenants/actions';
 import { useCurrentTenant } from '../../slices/Tenants/hooks';
+import { clearSession } from '../../slices/Session/actions';
 
 const drawerWidth = 240;
 
@@ -80,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     position: 'relative',
     whiteSpace: 'nowrap',
+    overflowX: 'hidden',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -121,6 +123,20 @@ const useStyles = makeStyles((theme) => ({
   },
   brand: {
     fontWeight: 600
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+    transition: theme.transitions.create('padding', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  nestedClosed: {
+    paddingLeft: theme.spacing(2.5),
+    transition: theme.transitions.create('padding', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   }
 }));
 
@@ -140,14 +156,18 @@ const enhance = compose(
 
 export const NavContainer = enhance(({children}) => {
   const session = useSession();
+  const currentUser = useCurrentUser();
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
+  console.log(currentUser);
   
   const currentTenant = useCurrentTenant();
-  const tenants = useSelector(selectTenants).filter(x => x.id !== currentTenant.id);
+  const tenants = useSelector(selectTenants).filter(x => currentTenant && x.id !== currentTenant.id);
 
   const [open, setOpen] = useState(true);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
@@ -155,12 +175,21 @@ export const NavContainer = enhance(({children}) => {
     setOpen(!open);
   };
 
+  const handleAccountToggle = () => {
+    setAccountOpen(!accountOpen);
+  }
+
   const handleMenuOpen = (e) => {
     setAnchorEl(e.currentTarget);
   }
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const handleSignOut = () => {
+    dispatch(clearSession())
+    history.push('/signin')
+  }
 
   if (!session.get('token'))
     return <Redirect to='/signin' />
@@ -229,8 +258,9 @@ export const NavContainer = enhance(({children}) => {
           </ListItem>
         </div>
         <Divider />
+        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%'}}>
+        <div>
         <List>
-          <div>
             <ListItem 
               button 
               selected={location.pathname === '/'} 
@@ -281,8 +311,46 @@ export const NavContainer = enhance(({children}) => {
               </ListItemIcon>
               <ListItemText primary="Device Groups" />
             </ListItem>
-          </div>
         </List>
+        </div>
+        <div>
+        <List>
+            <Collapse in={accountOpen} timeout="auto" unmountOnExit>
+              <Divider />
+              <List component="div" disablePadding>
+                <ListItem 
+                  button 
+                  className={clsx(classes.nested, !open && classes.nestedClosed)}
+                  onClick={handleSignOut}  
+                >
+                  <ListItemIcon>
+                    <ExitToApp />
+                  </ListItemIcon>
+                  <ListItemText primary="Sign Out" />
+                </ListItem>
+                <ListItem button className={clsx(classes.nested, !open && classes.nestedClosed)}>
+                  <ListItemIcon>
+                    <Settings />
+                  </ListItemIcon>
+                  <ListItemText primary="Manage Account" />
+                </ListItem>
+              </List>
+              <Divider />
+            </Collapse>
+            <ListItem 
+              button
+              onClick={handleAccountToggle}
+              style={{paddingLeft: '14px'}}
+            >
+              <ListItemIcon>
+                <AccountCircle fontSize='large' />
+              </ListItemIcon>
+              <ListItemText primary={currentUser.name} />
+              {accountOpen ? <ExpandMore /> : <ExpandLess />}
+            </ListItem>
+        </List>
+        </div>
+        </div>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

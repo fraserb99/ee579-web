@@ -16,9 +16,10 @@ const apiHandlers = {
 };
 
 const handlers = {
-	'SET_TOKENS': (state, action) => state
+	'SET_SESSION': (state, action) => state
 		.set('token', action.payload.token)
-		.set('refreshToken', action.payload.refreshToken),
+		.set('refreshToken', action.payload.refreshToken)
+		.set('user', action.payload.user),
 	'SET_CURRENT_USER': (state, action) => state.set('user', action.payload),
 	'CLEAR_SESSION': state => initialState,
 	'SET_CURRENT_TENANT': (state, action) => state.set('currentTenant', action.payload)

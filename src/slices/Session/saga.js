@@ -1,11 +1,11 @@
 import { call, put, takeEvery } from "@redux-saga/core/effects";
 import { push } from "connected-react-router";
-import { REQUEST_SIGNIN, REQUEST_SIGNUP } from "./actions";
+import { CLEAR_SESSION, REQUEST_SIGNIN, REQUEST_SIGNUP } from "./actions";
 
 function* signInSuccess(action) {
     console.log(action);
     yield put({
-        type: 'SET_TOKENS',
+        type: 'SET_SESSION',
         payload: action.payload
     });
     // yield put(getCurrentUser());

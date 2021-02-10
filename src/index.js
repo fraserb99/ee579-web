@@ -15,10 +15,13 @@ import formErrorHandlingMiddleware from './infrastructure/api/formErrorHandlingM
 import { formatState } from './infrastructure/redux/core';
 import { rootSaga } from './infrastructure/redux/rootSaga';
 import createSagaMiddleware from 'redux-saga';
+import { Map } from 'immutable';
 
 var existingStore = localStorage.getItem('store');
+
+console.log(JSON.parse(existingStore));
 const initialState = existingStore ? 
-  JSON.parse(localStorage.getItem('store'))
+  { session: new Map({ ...JSON.parse(existingStore).session }) }
   :
   {};
 
@@ -31,7 +34,7 @@ const createStoreWithMiddleware = applyMiddleware(
   formErrorHandlingMiddleware,
   sagaMiddleware,
   )(createStore);
-const store = createStoreWithMiddleware(rootReducer, formatState(initialState), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStoreWithMiddleware(rootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 store.subscribe(() => {
   const state = store.getState();
