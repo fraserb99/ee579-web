@@ -20,9 +20,8 @@ export const useNavStyles = makeStyles((theme) => ({
         width: '100%',
         marginLeft: 0,
         [theme.breakpoints.up('sm')]: {
-            
             marginLeft: theme.spacing(8),
-        width: `calc(100% - ${theme.spacing(8)}px)`,
+            width: `calc(100% - ${theme.spacing(8)}px)`,
         },
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
@@ -31,8 +30,10 @@ export const useNavStyles = makeStyles((theme) => ({
         }),
     },
     appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: drawerWidth,
+            width: `calc(100% - ${drawerWidth}px)`,
+        },
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,

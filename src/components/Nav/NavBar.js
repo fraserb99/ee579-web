@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Button, IconButton, Menu, MenuItem, Typography } from '@material-ui/core';
-import { ExpandMore, Menu as MenuIcon, MoreVert } from '@material-ui/icons';
+import { Button, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@material-ui/core';
+import { ExpandMore, Menu as MenuIcon, MoreVert, Security } from '@material-ui/icons';
 import { useNavStyles } from './useNavStyles';
 import { useCurrentTenant } from '../../slices/Tenants/hooks';
 import { useSelector } from 'react-redux';
 import { selectTenants } from '../../slices/Tenants/selectors';
 import clsx from 'clsx';
+import { useCurrentUser } from '../../slices/Session/hooks';
 
 export const NavBar = ({handleDrawerToggle, drawerOpen}) => {
     const classes = useNavStyles();
     
+    const currentUser = useCurrentUser();
     const currentTenant = useCurrentTenant();
     const tenants = useSelector(selectTenants).filter(x => currentTenant && x.id !== currentTenant.id);
 
@@ -73,7 +75,10 @@ export const NavBar = ({handleDrawerToggle, drawerOpen}) => {
             </MenuItem>
             {tenants && tenants.map(x => 
               <MenuItem>
-                {x.name}
+                    <ListItemIcon>
+                        <Security />
+                    </ListItemIcon>
+                <ListItemText primary={x.name} />
               </MenuItem>
             )}
           </Menu>

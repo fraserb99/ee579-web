@@ -19,7 +19,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { AccountCircle, ArrowDropDown, ArrowDropDownCircleOutlined, ArrowDropDownCircleRounded, ArrowDropDownOutlined, ArrowDropDownRounded, Dashboard, DeveloperBoard, ExitToApp, ExpandLess, ExpandMore, Layers, People, ScatterPlot, Settings, SwapHorizRounded } from '@material-ui/icons';
-import { Accordion, AccordionSummary, Collapse, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { Accordion, AccordionSummary, Collapse, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, useMediaQuery } from '@material-ui/core';
 import { useCurrentUser, useSession } from '../../slices/Session/hooks';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -54,15 +54,10 @@ export const NavContainer = enhance(({children}) => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
-  console.log(currentUser);
-  
-  const currentTenant = useCurrentTenant();
-  const tenants = useSelector(selectTenants).filter(x => currentTenant && x.id !== currentTenant.id);
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
 
   const [open, setOpen] = useState(true);
   const [accountOpen, setAccountOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const menuOpen = Boolean(anchorEl);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -71,13 +66,6 @@ export const NavContainer = enhance(({children}) => {
   const handleAccountToggle = () => {
     setAccountOpen(!accountOpen);
   }
-
-  const handleMenuOpen = (e) => {
-    setAnchorEl(e.currentTarget);
-  }
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleSignOut = () => {
     dispatch(clearSession())
@@ -92,11 +80,12 @@ export const NavContainer = enhance(({children}) => {
       <CssBaseline />
       <NavBar handleDrawerToggle={handleDrawerToggle} drawerOpen={open} />
       <Drawer
-        variant="permanent"
+        variant={isSmallScreen ? 'temporary' : 'permanent'}
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
         open={open}
+        onClose={handleDrawerToggle}
       >
         <div className={classes.toolbarIcon}>
           <ListItem>
