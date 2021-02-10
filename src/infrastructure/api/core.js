@@ -1,6 +1,6 @@
 import { createAction } from "redux-api-middleware";
 
-export const API_URL = process.env.API_URL || 'https://localhost:5001';
+export const API_URL = process.env.NODE_ENV !== 'development' ? 'https://ee579-dev-api.azurewebsites.net' : 'https://localhost:5001';
 
 export const appendUrl = path => baseUrl => `${baseUrl}/${path}`;
 
