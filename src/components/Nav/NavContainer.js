@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,7 +21,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { AccountCircle, ArrowDropDown, ArrowDropDownCircleOutlined, ArrowDropDownCircleRounded, ArrowDropDownOutlined, ArrowDropDownRounded, Dashboard, DeveloperBoard, ExitToApp, ExpandLess, ExpandMore, Layers, People, ScatterPlot, Settings, SwapHorizRounded } from '@material-ui/icons';
 import { Accordion, AccordionSummary, Collapse, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, useMediaQuery } from '@material-ui/core';
 import { useCurrentUser, useSession } from '../../slices/Session/hooks';
-import { Redirect, useHistory, useLocation } from 'react-router-dom';
+import { Redirect, Route, useHistory, useLocation } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { selectTenants } from '../../slices/Tenants/selectors';
 import { getTenants } from '../../slices/Tenants/actions';
@@ -32,6 +32,7 @@ import { useCurrentTenant } from '../../slices/Tenants/hooks';
 import { clearSession } from '../../slices/Session/actions';
 import { useNavStyles } from './useNavStyles';
 import { NavBar } from './NavBar';
+import { AuthedRoutes } from '../../infrastructure/routes/AuthedRoutes';
 
 const enhance = compose(
   connect(
@@ -55,9 +56,18 @@ export const NavContainer = enhance(({children}) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const isMediumScreen = useMediaQuery('(max-width:1280px)')
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+
+  useLayoutEffect(() => {
+    if (isSmallScreen) setOpen(!isSmallScreen)
+  }, [isSmallScreen])
+
+  useLayoutEffect(() => {
+    if (isMediumScreen) setOpen(false);
+  }, [isMediumScreen])
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -192,8 +202,8 @@ export const NavContainer = enhance(({children}) => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          {children}
+        <Container maxWidth="xl" className={classes.container}>
+          <AuthedRoutes />
         </Container>
       </main>
     </div>
