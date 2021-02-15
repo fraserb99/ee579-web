@@ -1,6 +1,7 @@
 import { colors, createMuiTheme, Slider, ThemeProvider, Typography } from '@material-ui/core';
 import { Whatshot } from '@material-ui/icons';
 import React from 'react';
+import { inputTypeFormatters, inputIconMap, inputDisplayFormatter } from '../formatters/inputFormatters';
 import { Device } from './Device';
 
 const theme = createMuiTheme({
@@ -10,18 +11,16 @@ const theme = createMuiTheme({
 })
 
 export const InputDevice = props => {
+    const { peripheral } = props;
 
     return (
         <ThemeProvider theme={theme}>
             <Device
-                type='Temperature'
-                TypeIcon={Whatshot}
+                type={inputTypeFormatters(peripheral.type)}
+                TypeIcon={inputIconMap[peripheral.type]}
                 {...props}
             >
-                <Typography variant='caption'>
-                    <Slider value={[20, 40]} valueLabelDisplay="on" valueLabelFormat={(value, index) => index === 0 ? `>${value}C` : `<${value}C`} />
-                    Temperature Value
-                </Typography>
+                {inputDisplayFormatter(peripheral)}
             </Device>
         </ThemeProvider>
     )

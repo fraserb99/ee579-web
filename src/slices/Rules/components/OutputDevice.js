@@ -1,6 +1,7 @@
 import { colors, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { Flare } from '@material-ui/icons';
 import React from 'react';
+import { outputDisplayFormatter, outputIconMap } from '../formatters/outputFormatters';
 import { Device } from './Device';
 
 const theme = createMuiTheme({
@@ -10,14 +11,16 @@ const theme = createMuiTheme({
 })
 
 export const OutputDevice = props => {
-
+    const { peripheral } = props;
     return (
         <ThemeProvider theme={theme}>
             <Device
-                type='Led Blink'
-                TypeIcon={Flare}
+                type={peripheral.type}
+                TypeIcon={outputIconMap[peripheral.type]}
                 {...props}
-            />
+            >
+                {outputDisplayFormatter(peripheral)}
+            </Device>
         </ThemeProvider>
     )
 }

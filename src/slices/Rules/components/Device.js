@@ -18,32 +18,44 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         fontWeight: 500
     },
+    peripheralType: {
+        display: 'flex',
+        alignItems: 'center',
+        fontWeight: 500
+    },
     deviceIcon: {
         marginRight: theme.spacing(1)
+    },
+    peripheralName: {
+        paddingLeft: '43px'
     }
 }))
 
-export const Device = ({type, TypeIcon, children, transitionIn}) => {
+export const Device = ({type, TypeIcon, children, transitionIn, peripheral}) => {
     const classes = useStyles();
+    console.log(peripheral)
 
     return (
         <Grow in={transitionIn} >
             <Paper elevation={5} className={classes.device}>
                 <Grid container className={classes.container}>
                     <Grid item container xs={12} md={4} alignItems='center'>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} style={{overflow: 'hidden'}}>
                             <Typography className={classes.deviceHeader}>
                                 <DeveloperBoard className={classes.deviceIcon} fontSize='large' />
-                                Device Name
+                                {peripheral.device.name}
                             </Typography>
-                            <Typography className={classes.deviceHeader}>
+                            <Typography className={classes.peripheralType}>
                                 <TypeIcon className={classes.deviceIcon} fontSize='large' />
                                 {type}
+                            </Typography>
+                            <Typography variant='body1' className={classes.peripheralName}>
+                                {peripheral.peripheral}
                             </Typography>
                         </Grid>
                     </Grid>
                     <Grid item container xs={12} md={8} alignItems='center' justify='center'>
-                        <Grid item xs={10} style={{marginTop: type === 'Temperature' ? 36 : 8}}>
+                        <Grid item xs={10} style={{marginTop: 36}}>
                             {children}
                         </Grid>
                     </Grid>

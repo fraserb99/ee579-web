@@ -3,6 +3,7 @@ import { Add } from '@material-ui/icons';
 import React from 'react';
 import { BlankState } from '../../components/BlankState/BlankState';
 import { Rule } from './components/Rule';
+import { rules } from './rulesExample';
 
 const useStyles = makeStyles((theme) => ({
     addBtn: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export const RulesPage = () => {
     const classes = useStyles();
 
-    if (false) return (
+    if (!rules) return (
         <BlankState message="You haven't added any routes yet, add one now to get started!">
             <IconButton color='secondary' className={classes.addBtn}>
                 <Add fontSize='large' />
@@ -33,8 +34,9 @@ export const RulesPage = () => {
 
     return (
         <React.Fragment>
-            <Rule />
-            <Fab color="primary" className={classes.fab}>
+            {rules.map(x => <Rule rule={x} />)}
+            
+            <Fab color="secondary" className={classes.fab}>
                 <Add />
             </Fab>
         </React.Fragment>

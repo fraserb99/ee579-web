@@ -67,7 +67,6 @@ export const NavBar = ({handleDrawerToggle, drawerOpen}) => {
             }}
             transformOrigin={{
               vertical: -40,
-            //   horizontal: -16,
             }}
         >
             <MenuItem disabled>

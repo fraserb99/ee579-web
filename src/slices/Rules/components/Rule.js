@@ -1,5 +1,5 @@
-import { Button, Collapse, colors, createMuiTheme, Divider, Grid, Grow, IconButton, makeStyles, Paper, ThemeProvider, Typography } from '@material-ui/core';
-import { ArrowForward, Delete, Edit, ExpandLess, ExpandMore } from '@material-ui/icons';
+import { Button, Collapse, colors, createMuiTheme, Divider, Grid, Grow, Hidden, IconButton, makeStyles, Paper, ThemeProvider, Typography } from '@material-ui/core';
+import { ArrowDownward, ArrowForward, Delete, Edit, ExpandLess, ExpandMore } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { Device } from './Device';
 import { InputDevice } from './InputDevice';
@@ -36,19 +36,35 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
         paddingTop: theme.spacing(0.5),
         fontSize: '1.1rem'
+    },
+    arrowContainer: {
+        marginTop: theme.spacing(2),
+        [theme.breakpoints.up('md')]: {
+            marginTop: theme.spacing(6)
+        }
     }
 }))
 
-export const Rule = () => {
+export const Rule = ({rule}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = useState();
+
+    const { 
+        name,
+        inputDevices,
+        outputDevices
+    } = rule;
+    const extraInputs = inputDevices.slice(1);
+    const extraOutputs = outputDevices.slice(1);
+    console.log(rule);
+
     return (
         <Paper>
             <Grid container spacing={1} className={classes.rule}>
                 <Grid item container xs={12}>
                     <Grid xs={9}>
                         <Typography component='h2' variant='h5' className={classes.title}>
-                            Temperature Rule
+                            {name}
                         </Typography>
                     </Grid>
                     <Grid xs={3}>
@@ -73,18 +89,41 @@ export const Rule = () => {
                     <Typography component='h3' variant='body2' className={classes.header}>
                         Inputs
                     </Typography>
-                    <InputDevice transitionIn />
-                    <Collapse in={!expanded}>
-                        <Typography variant='h6' className={classes.more}>
-                            + 1 more
-                        </Typography>
-                    </Collapse>
-                    <Collapse in={expanded}>
-                        <InputDevice transitionIn={expanded} />
-                    </Collapse>
+                    <InputDevice
+                        peripheral={inputDevices[0]}
+                        transitionIn
+                    />
+                    {!!extraInputs.length && 
+                        <React.Fragment>
+                            <Collapse in={!expanded}>
+                                <Typography variant='h6' className={classes.more}>
+                                    + {extraInputs.length} more
+                                </Typography>
+                            </Collapse>
+                            <Collapse in={expanded}>
+                                {extraInputs.map(x => 
+                                    <OutputDevice
+                                        peripheral={x}
+                                        transitionIn={expanded} 
+                                    />)}
+                            </Collapse>
+                        </React.Fragment>
+                    }
                 </Grid>
-                <Grid item container xs={12} md={2} justify='center' alignItems='center'>
-                    <ArrowForward />
+                <Grid 
+                    item
+                    container
+                    xs={12} md={2}
+                    justify='center'
+                    alignItems='center'
+                    className={classes.arrowContainer}
+                >
+                    <Hidden smDown>
+                        <ArrowForward />
+                    </Hidden>
+                    <Hidden mdUp>
+                        <ArrowDownward />
+                    </Hidden>
                 </Grid>
                 <Grid
                     item
@@ -95,15 +134,26 @@ export const Rule = () => {
                     <Typography component='h3' variant='body2' className={classes.header}>
                         Outputs
                     </Typography>
-                    <OutputDevice transitionIn />
-                    <Collapse in={!expanded}>
-                        <Typography variant='h6' className={classes.more}>
-                            + 1 more
-                        </Typography>
-                    </Collapse>
-                    <Collapse in={expanded}>
-                        <OutputDevice transitionIn={expanded} />
-                    </Collapse>
+                    <OutputDevice
+                        peripheral={outputDevices[0]}
+                        transitionIn
+                    />
+                    {!!extraOutputs.length && 
+                        <React.Fragment>
+                            <Collapse in={!expanded}>
+                                <Typography variant='h6' className={classes.more}>
+                                    + {extraOutputs.length} more
+                                </Typography>
+                            </Collapse>
+                            <Collapse in={expanded}>
+                                {extraOutputs.map(x => 
+                                    <OutputDevice
+                                        peripheral={x}
+                                        transitionIn={expanded} 
+                                    />)}
+                            </Collapse>
+                        </React.Fragment>
+                    }
                 </Grid>
             </Grid>
             <Button color='primary' className={classes.expand} onClick={() => setExpanded(!expanded)}>

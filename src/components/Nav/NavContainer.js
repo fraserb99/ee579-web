@@ -56,13 +56,18 @@ export const NavContainer = enhance(({children}) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const isMediumScreen = useMediaQuery('(max-width:1280px)')
 
   const [open, setOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
 
   useLayoutEffect(() => {
-    setOpen(!isSmallScreen)
+    if (isSmallScreen) setOpen(!isSmallScreen)
   }, [isSmallScreen])
+
+  useLayoutEffect(() => {
+    if (isMediumScreen) setOpen(false);
+  }, [isMediumScreen])
 
   const handleDrawerToggle = () => {
     setOpen(!open);
