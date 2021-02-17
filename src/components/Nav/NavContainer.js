@@ -244,7 +244,7 @@ export const NavContainer = enhance(({children}) => {
             <ListItem 
               button 
               selected={location.pathname.startsWith('/devices')} 
-              onClick={() => history.push('/devices')}
+              onClick={() => history.push('/devices/add')}
             >
               <ListItemIcon className={classes.listItemIcon}>
                 <DeveloperBoard />
