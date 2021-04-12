@@ -8,6 +8,7 @@ import { withForm } from '../../infrastructure/form/withForm';
 import * as Yup from 'yup';
 import { TextRow } from '../../components/Form/TextRow';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
+import { GoogleLoginButton, MicrosoftLoginButton } from 'react-social-login-buttons';
 
 const useStyles = makeStyles((theme) => ({
     submit: {
@@ -71,16 +72,7 @@ export const SignInForm = enhance(({handleSubmit}) => {
               <CircularProgress color='inherit' size='1.5rem' />
             }
           </Button>
-          <Button
-            fullWidth
-            variant="outlined"
-            className={classes.submit}
-          >
-            <Grid container>
-                <Grid item xs={1}><img src='google-logo.png' className={classes.logo} /></Grid>
-                <Grid item xs={11} alignItems='center'>Sign in with google</Grid>
-            </Grid>
-          </Button>
+          
         </Form>
     )
 })

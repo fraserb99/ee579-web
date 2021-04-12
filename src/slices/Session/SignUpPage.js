@@ -10,6 +10,8 @@ import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import { SignUpForm } from './SignUpForm';
 import { Link } from '../../components/Link';
+import { GoogleLoginButton, MicrosoftLoginButton } from 'react-social-login-buttons';
+import { socialButtonStyles } from './SignInPage';
 
 function Copyright() {
   return (
@@ -59,6 +61,19 @@ export const SignUpPage = () => {
               Sign Up
           </Typography>
           <SignUpForm />
+          <GoogleLoginButton
+            style={{...socialButtonStyles, marginTop: '8px'}}
+            align='center'
+            text='Sign In with Google' 
+            onClick={() => {}}
+            type='button'
+          />
+          <MicrosoftLoginButton
+            style={socialButtonStyles}
+            align='center'
+            text='Sign In with Microsoft'
+            onClick={() => {}}
+          />
           <Grid container>
               <Grid item xs>
                   <Link to="/forgot-password" variant="body2">

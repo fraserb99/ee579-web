@@ -8,6 +8,8 @@ import { withForm } from '../../infrastructure/form/withForm';
 import * as Yup from 'yup';
 import { TextRow } from '../../components/Form/TextRow';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
+import { GoogleLoginButton, MicrosoftLoginButton } from 'react-social-login-buttons';
+import { socialButtonStyles } from './SignInPage';
 
 const useStyles = makeStyles((theme) => ({
     submit: {

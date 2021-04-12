@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { SignInForm } from './SignInForm';
 import { Link } from '../../components/Link';
+import { GoogleLoginButton, MicrosoftLoginButton } from 'react-social-login-buttons';
 
 function Copyright() {
   return (
@@ -21,6 +22,18 @@ function Copyright() {
       {'.'}
     </Typography>
   );
+}
+
+export const socialButtonStyles = {
+  margin: 0,
+  width: '100%',
+  height: '36px',
+  padding: '0px 46px 0px 10px',
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontWeight: 500,
+  fontSize: '0.875rem',
+  textTransform: 'uppercase',
+  marginBottom: '8px'
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +70,19 @@ export const SignInPage = () => {
                 Sign in
             </Typography>
             <SignInForm />
+            <GoogleLoginButton
+              style={{...socialButtonStyles, marginTop: '8px'}}
+              align='center'
+              text='Sign In with Google' 
+              onClick={() => {}}
+              type='button'
+            />
+            <MicrosoftLoginButton
+              style={socialButtonStyles}
+              align='center'
+              text='Sign In with Microsoft'
+              onClick={() => {}}
+            />
             <Grid container>
                 <Grid item xs>
                     <Link href="/forgot-password" variant="body2">
