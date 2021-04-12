@@ -1,12 +1,13 @@
 import React from 'react';
 import { Form } from 'formik';
-import { TextField, FormControlLabel, Button, Checkbox, makeStyles } from '@material-ui/core';
+import { TextField, FormControlLabel, Button, Checkbox, makeStyles, CircularProgress } from '@material-ui/core';
 import { compose } from '@reduxjs/toolkit';
 import { formContainer } from '../../infrastructure/form/formContainer';
 import * as actions from './actions';
 import { withForm } from '../../infrastructure/form/withForm';
 import * as Yup from 'yup';
 import { TextRow } from '../../components/Form/TextRow';
+import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 
 const useStyles = makeStyles((theme) => ({
     submit: {
@@ -41,6 +42,7 @@ const enhance = compose(
 
 export const SignUpForm = enhance(({handleSubmit}) => {
     const classes = useStyles();
+    const loading = useLoading('session');
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -79,7 +81,11 @@ export const SignUpForm = enhance(({handleSubmit}) => {
                 color="primary"
                 className={classes.submit}
             >
-                Sign Up
+                {!loading ?
+                    'Sign Up'
+                    :
+                    <CircularProgress color='inherit' size='1.5rem' />
+                }
             </Button>
         </Form>
     )

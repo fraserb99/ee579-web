@@ -6,6 +6,9 @@ import { SignUpPage } from './slices/Session/SignUpPage';
 import { NavContainer } from './components/Nav/NavContainer';
 import { RulesPage } from './slices/Rules/RulesPage';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { ConnectedRouter } from 'connected-react-router';
+import { history } from '.';
+import { AccountCreatedPage } from './slices/Session/AccountCreatedPage';
 
 const theme = createMuiTheme({
   palette: {
@@ -22,13 +25,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <BrowserRouter>
+        <ConnectedRouter history={history}>
             <Switch>
               <Route path='/signin' component={SignInPage} />
               <Route path='/signup' component={SignUpPage} />
+              <Route path='/account-created' component={AccountCreatedPage} />
               <Route path='/' component={NavContainer} />
             </Switch>
-        </BrowserRouter>
+        </ConnectedRouter>
       </div>
     </ThemeProvider>
   );

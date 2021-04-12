@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'formik';
-import { TextField, FormControlLabel, Button, Checkbox, makeStyles, CircularProgress } from '@material-ui/core';
+import { TextField, FormControlLabel, Button, Checkbox, makeStyles, CircularProgress, Grid } from '@material-ui/core';
 import { compose } from '@reduxjs/toolkit';
 import { formContainer } from '../../infrastructure/form/formContainer';
 import * as actions from './actions';
@@ -70,6 +70,16 @@ export const SignInForm = enhance(({handleSubmit}) => {
               :
               <CircularProgress color='inherit' size='1.5rem' />
             }
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            className={classes.submit}
+          >
+            <Grid container>
+                <Grid item xs={1}><img src='google-logo.png' className={classes.logo} /></Grid>
+                <Grid item xs={11} alignItems='center'>Sign in with google</Grid>
+            </Grid>
           </Button>
         </Form>
     )

@@ -5,7 +5,7 @@ export const injectTenantMiddleware = store => next => action => {
 	if (isRSAA(action)) {
 		const state = store.getState();
 		callApi.headers = Object.assign({}, callApi.headers, {
-			'tenant-id': state.session.get('currentTenant'),
+			'tenant-id': state.session.get('currentTenant') || '',
 		});
 	}
 

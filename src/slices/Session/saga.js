@@ -1,9 +1,9 @@
 import { call, put, takeEvery } from "@redux-saga/core/effects";
 import { push } from "connected-react-router";
+import { history } from "../..";
 import { CLEAR_SESSION, REQUEST_SIGNIN, REQUEST_SIGNUP } from "./actions";
 
 function* signInSuccess(action) {
-    console.log(action);
     yield put({
         type: 'SET_SESSION',
         payload: action.payload
@@ -17,6 +17,11 @@ function* signInSuccess(action) {
     }
 }
 
+function* signUpSuccess(action) {
+    console.log(action);
+    history.push('/account-created');
+}
+
 function* signInFailure(action) {
     console.log(action);
     // action.meta.form.setErrors({
@@ -26,8 +31,9 @@ function* signInFailure(action) {
 }
 
 function* makeListeners() {
-    yield(takeEvery(x => x.type === 'SUCCESS' && [REQUEST_SIGNIN, REQUEST_SIGNUP].includes(x.meta.type), signInSuccess));
+    yield(takeEvery(x => x.type === 'SUCCESS' && [REQUEST_SIGNIN].includes(x.meta.type), signInSuccess));
     // yield(takeEvery(x => x.type === 'SUCCESS' && [REQUEST_SIGNIN, REQUEST_SIGNUP].includes(x.meta.type), signInSuccess));
+    yield(takeEvery(x => x.type === 'SUCCESS' && x.meta.type === REQUEST_SIGNUP, signUpSuccess));
 
     yield(takeEvery(x => x.type === 'FAILURE' && x.meta.type === REQUEST_SIGNIN, signInFailure));
 }
