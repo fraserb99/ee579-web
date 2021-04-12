@@ -12,6 +12,9 @@ const actionsTheme = createMuiTheme({
 })
 
 const useStyles = makeStyles(theme => ({
+    ruleContainer: {
+        marginBottom: theme.spacing(2)
+    },
     rule: {
         padding: theme.spacing(1.5)
     },
@@ -56,10 +59,10 @@ export const Rule = ({rule}) => {
     } = rule;
     const extraInputs = inputDevices.slice(1);
     const extraOutputs = outputDevices.slice(1);
-    console.log(rule);
+    console.log(extraInputs);
 
     return (
-        <Paper>
+        <Paper className={classes.ruleContainer}>
             <Grid container spacing={1} className={classes.rule}>
                 <Grid item container xs={12}>
                     <Grid xs={9}>
@@ -156,9 +159,11 @@ export const Rule = ({rule}) => {
                     }
                 </Grid>
             </Grid>
-            <Button color='primary' className={classes.expand} onClick={() => setExpanded(!expanded)}>
-                {!expanded ? <ExpandMore /> : <ExpandLess />}
-            </Button>
+            {(!!extraInputs.length || !!extraOutputs.length) &&
+                <Button color='primary' className={classes.expand} onClick={() => setExpanded(!expanded)}>
+                    {!expanded ? <ExpandMore /> : <ExpandLess />}
+                </Button>
+            }
         </Paper>
     )
 }
