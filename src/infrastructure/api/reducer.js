@@ -20,7 +20,7 @@ const handlers = {
 };
 
 const entityHandlers = {
-	'REMOVE_ENTITY': (state, action) => removeIn(state, action.payload.path)
+	'REMOVE_ENTITY': (state, action) => removeIn(state, action.path)
 }
 
 const reducer = (state = initialState, action) => {

@@ -7,6 +7,10 @@ import { closeDeleteDialog } from "./actions";
 function* deleteSuccess(action) {
     yield put(closeDeleteDialog())
     yield put(showSuccessSnackbar(action.meta.successText))
+    yield put({
+        type: 'REMOVE_ENTITY',
+        path: action.meta.path
+    })
 }
 
 function* makeListeners() {
