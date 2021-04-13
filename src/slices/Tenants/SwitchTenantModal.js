@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export const SwitchTenantModal = ({handleCreate}) => {
+export const SwitchTenantModal = ({handleCreate, handleEdit}) => {
     const classes = useStyles();
     const [open, setOpen] = useContext(TenantModalContext);
 
@@ -57,11 +57,13 @@ export const SwitchTenantModal = ({handleCreate}) => {
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText primary={x.name} />
-                        <ListItemSecondaryAction>
-                            <IconButton edge="end" color='primary'>
-                                <Edit />
-                            </IconButton>
-                        </ListItemSecondaryAction>
+                        {x.role === 'Owner' &&
+                            <ListItemSecondaryAction>
+                                <IconButton edge="end" color='primary' onClick={handleEdit(x)}>
+                                    <Edit />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        }
                     </ListItem>
                     :
                     <ListItem
@@ -71,7 +73,7 @@ export const SwitchTenantModal = ({handleCreate}) => {
                         <ListItemText inset primary={x.name} />
                         {x.role === 'Owner' &&
                             <ListItemSecondaryAction>
-                                <IconButton edge="end" color='primary'>
+                                <IconButton edge="end" color='primary' onClick={handleEdit(x)}>
                                     <Edit />
                                 </IconButton>
                             </ListItemSecondaryAction>

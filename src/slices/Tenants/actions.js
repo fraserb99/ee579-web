@@ -18,6 +18,16 @@ export function createTenant(values, form, onSuccess) {
     }, values, 'POST')
 }
 
+export const UPDATE_TENANT = 'UPDATE_TENANT';
+export function updateTenant(values, form, onSuccess) {
+    return apiCall(UPDATE_TENANT, appendUrl(`tenants/${values.id}`), {
+        schema: TenantsSchema,
+        form,
+        onSuccess,
+        successText: 'Tenant successfully updated'
+    }, values, 'PUT')
+}
+
 export const SET_CURRENT_TENANT = 'SET_CURRENT_TENANT';
 export const switchTenant = (id) => ({
     type: SET_CURRENT_TENANT,

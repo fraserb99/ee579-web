@@ -18,3 +18,5 @@ export const selectCurrentRole = state => {
     return tenant ? tenant.role : null;
 }
 export const selectTenants = state => hydrateTenants(state);
+
+export const selectTenantById = (state, id) => hydrateTenant(state, id);
