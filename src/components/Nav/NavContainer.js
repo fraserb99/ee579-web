@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -33,6 +33,7 @@ import { clearSession } from '../../slices/Session/actions';
 import { useNavStyles } from './useNavStyles';
 import { NavBar } from './NavBar';
 import { AuthedRoutes } from '../../infrastructure/routes/AuthedRoutes';
+import { TenantModalContext } from '../../slices/Tenants/TenantModalContext';
 
 const drawerWidth = 240;
 
@@ -172,6 +173,7 @@ export const NavContainer = enhance(({children}) => {
 
   const [open, setOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [tenantModalOpen, setTenantModalOpen] = useContext(TenantModalContext);
 
   useLayoutEffect(() => {
     if (isSmallScreen) setOpen(!isSmallScreen)
@@ -192,6 +194,10 @@ export const NavContainer = enhance(({children}) => {
   const handleSignOut = () => {
     dispatch(clearSession())
     history.push('/signin')
+  }
+
+  const handleSwitchTenant = () => {
+    setTenantModalOpen(true);
   }
 
   if (!session.get('token'))
@@ -279,7 +285,7 @@ export const NavContainer = enhance(({children}) => {
         <List>
           <ListItem 
             button 
-            onClick={() => {}}
+            onClick={handleSwitchTenant}
             style={{paddingLeft: '10px'}}
           >
             <ListItemIcon className={classes.listItemIcon}>

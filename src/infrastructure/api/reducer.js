@@ -20,7 +20,21 @@ const handlers = {
 };
 
 const entityHandlers = {
-	'REMOVE_ENTITY': (state, action) => removeIn(state, action.path)
+	'REMOVE_ENTITY': (state, action) => removeIn(state, action.path),
+	'RESET_ENTITIES': (state, action) => {
+		if (!action.payload || !action.payload.except)
+			return initialState;
+
+		const { payload: { except }} = action;
+		console.log(state);
+		
+		return Object.keys(state).reduce((x, k) => {
+			if (except.includes(k))
+				x[k] = state[k];
+
+			return x;
+		}, {})
+	}
 }
 
 const reducer = (state = initialState, action) => {

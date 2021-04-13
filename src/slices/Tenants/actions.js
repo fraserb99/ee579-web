@@ -7,3 +7,9 @@ export function getTenants() {
         schema: TenantsSchema
     })
 }
+
+export const SET_CURRENT_TENANT = 'SET_CURRENT_TENANT';
+export const switchTenant = (id) => ({
+    type: SET_CURRENT_TENANT,
+    payload: id
+})

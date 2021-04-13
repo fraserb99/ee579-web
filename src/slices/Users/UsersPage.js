@@ -149,7 +149,7 @@ export const UsersPage = () => {
                     disableColumnReorder
                     disableSelectionOnClick
                     autoHeight
-                    loading={loading && !users}
+                    loading={loading && !users.length}
                     error={error && !users || undefined}
                 />
             </Paper>

@@ -9,7 +9,7 @@ const hydrateTenants = state =>
     )
     .map(id => hydrateTenant(state, id));
 
-const selectCurrentTenantId = state => state.session.get('currentTenant');
+export const selectCurrentTenantId = state => state.session.get('currentTenant');
 
 export const selectCurrentTenant = state => hydrateTenant(state, selectCurrentTenantId(state));
 export const selectCurrentRole = state => {
