@@ -25,3 +25,13 @@ export function inviteUser(values, form, onSuccess) {
         schema: UsersSchema
     }, values, 'POST');
 }
+
+export const UPDATE_USER = 'UPDATE_USER';
+export function updateUser(values, form, onSuccess) {
+    return apiCall(UPDATE_USER, appendUrl(`users/${values.id}`), {
+        successText: "User role updated",
+        form,
+        onSuccess,
+        schema: UsersSchema
+    }, values, 'PUT');
+}

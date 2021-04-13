@@ -1,6 +1,6 @@
 import { handleErrorSetting } from "../form/withForm";
 import { toastr } from "react-redux-toastr";
-import { showErrorSnackbar } from "../../components/Snackbar/actions";
+import { showErrorSnackbar, showSuccessSnackbar } from "../../components/Snackbar/actions";
 
 export default store => next => action => {
 	if (action.type === 'FAILURE' && action.meta.form) {
@@ -18,8 +18,9 @@ export default store => next => action => {
 		}
 	}
 
-	if (action.type === 'SUCCESS' && action.meta.onSuccess) {
-		action.meta.onSuccess()
+	if (action.type === 'SUCCESS') {
+		if (action.meta.onSuccess) action.meta.onSuccess();
+		if (action.meta.successText) store.dispatch(showSuccessSnackbar(action.meta.successText));
 	}
 	
 	return next(action);

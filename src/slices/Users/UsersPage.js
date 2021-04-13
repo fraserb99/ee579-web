@@ -10,6 +10,7 @@ import { useDeleteDialog } from '../../components/DeleteDialog/useDeleteDialog';
 import { useError } from '../../infrastructure/api/hooks/useError';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 import { removeUser } from './actions';
+import { EditRoleModal } from './forms/EditRoleModal';
 import { InviteUserModal } from './forms/InviteUserModal';
 import { useTenantUsers } from './hooks/useTenantUsers';
 import './table.css';
@@ -20,11 +21,12 @@ const theme = createMuiTheme({
     }
 })
 
-const userCols = ({handleDelete, classes}) => [
+const userCols = ({handleDelete, classes, handleShowRoleModal}) => [
     {
         field: 'name',
         headerName: 'Name',
-        flex: 1
+        flex: 1,
+        valueFormatter: params => params.value ? params.value : '-'
     },
     {
         field: 'email',
@@ -57,7 +59,7 @@ const userCols = ({handleDelete, classes}) => [
         flex: 1,
         renderCell: (params) => (
             <>
-                <IconButton color='primary'>
+                <IconButton color='primary' onClick={handleShowRoleModal(params.row)}>
                     <Edit fontSize='small' />
                 </IconButton>
                 <DeleteIconButton 
@@ -95,7 +97,11 @@ export const UsersPage = () => {
     const dispatch = useDispatch();
     const { url } = useRouteMatch();
     const history = useHistory();
+
     const [open, setOpen] = useState(false);
+
+    const [roleOpen, setRoleOpen] = useState(false);
+    const [item, setItem] = useState();
 
     const handleDelete = (user) => () => {
         console.log(user);
@@ -110,6 +116,18 @@ export const UsersPage = () => {
         setOpen(state);
     }
 
+    const handleShowRoleModal = (item) => () => {
+        setItem(item);
+        setRoleOpen(true);
+    }
+
+    const handleCloseRoleModal = () => {
+        setRoleOpen(false)
+        setTimeout(() => setItem(null), 1000);
+    }
+
+    console.log(roleOpen);
+
     return (
         <React.Fragment>
             <Paper>
@@ -122,7 +140,7 @@ export const UsersPage = () => {
                 <DataGrid
                     className={classes.table}
                     rows={users}
-                    columns={userCols({handleDelete, classes})}
+                    columns={userCols({handleDelete, classes, handleShowRoleModal})}
                     pageSize={10}
                     disableColumnSelector
                     disableColumnReorder
@@ -136,6 +154,12 @@ export const UsersPage = () => {
                 show={open}
                 setShow={setOpen}
                 onSuccess={handleInviteModalOpen(false)}
+            />
+            <EditRoleModal
+                show={roleOpen}
+                setShow={handleCloseRoleModal}
+                item={item}
+                onSuccess={handleCloseRoleModal}
             />
         </React.Fragment>
     )

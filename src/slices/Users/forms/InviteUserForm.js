@@ -41,7 +41,7 @@ export const InviteUserForm = enhance(({handleSubmit, handleClose, submitText, .
                     helperText={roleHelpText[props.values.role]}
                 >
                     <MenuItem value='User'>User</MenuItem>
-                    <MenuItem value='Admin'>Owner</MenuItem>
+                    <MenuItem value='Owner'>Owner</MenuItem>
                 </TextRow>
             </DialogContent>
             <DialogActions>
