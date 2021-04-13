@@ -106,12 +106,16 @@ export const UsersPage = () => {
         })
     }
 
+    const handleInviteModalOpen = (state) => () => {
+        setOpen(state);
+    }
+
     return (
         <React.Fragment>
             <Paper>
                 <Typography variant='h3' className={classes.title}>
                     Users
-                    <IconButton size='medium' color='secondary' onClick={() => setOpen(true)}>
+                    <IconButton size='medium' color='secondary' onClick={handleInviteModalOpen(true)}>
                         <Add fontSize='large' />
                     </IconButton>
                 </Typography>
@@ -131,7 +135,7 @@ export const UsersPage = () => {
             <InviteUserModal
                 show={open}
                 setShow={setOpen}
-                onSuccess={() => console.log('success')}
+                onSuccess={handleInviteModalOpen(false)}
             />
         </React.Fragment>
     )

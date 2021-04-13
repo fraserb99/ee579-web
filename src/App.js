@@ -9,7 +9,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { ConnectedRouter } from 'connected-react-router';
 import { history } from '.';
 import { AccountCreatedPage } from './slices/Session/AccountCreatedPage';
-import SuccessSnackbar from './components/Snackbar/SuccessSnackbar';
+import { Snackbars } from './components/Snackbar/Snackbars';
 
 const theme = createMuiTheme({
   palette: {
@@ -26,7 +26,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <SuccessSnackbar />
+        <Snackbars />
         <ConnectedRouter history={history}>
             <Switch>
               <Route path='/signin' component={SignInPage} />

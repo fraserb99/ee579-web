@@ -1,20 +1,26 @@
 const uiReducer = (state = {}, action) => {
     switch (action.type) {
         case "SNACKBAR_SUCCESS":
-        return {
-            ...state,
-            successSnackbarOpen: true,
-            successSnackbarMessage: action.message
-        };
+            return {
+                ...state,
+                successSnackbarOpen: true,
+                successSnackbarMessage: action.message
+            };
+        case "SNACKBAR_ERROR":
+            return {
+                ...state,
+                errorSnackbarOpen: true,
+                errorSnackbarMessage: action.message
+            };
         case "SNACKBAR_CLEAR":
-        return {
-            ...state,
-            successSnackbarOpen: false,
-            errorSnackbarOpen: false,
-            infoSnackbarOpen: false
-        };
+            return {
+                ...state,
+                successSnackbarOpen: false,
+                errorSnackbarOpen: false,
+                infoSnackbarOpen: false
+            };
         default:
-        return state;
+            return state;
     }
 };
 

@@ -5,6 +5,11 @@ export const showSuccessSnackbar = message => {
     };
 };
 
+export const showErrorSnackbar = message => ({
+        type: "SNACKBAR_ERROR", 
+        message
+    })
+
 export const clearSnackbar = () => {
     return {
         type: "SNACKBAR_CLEAR"

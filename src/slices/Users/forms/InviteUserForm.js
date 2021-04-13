@@ -6,14 +6,22 @@ import { SubmitButton } from "../../../components/Buttons/SubmitButton";
 import { TextRow } from "../../../components/Form/TextRow";
 import { withForm } from "../../../infrastructure/form/withForm";
 import { selectIsLoading } from "../../../infrastructure/redux/selectors";
+import * as Yup from 'yup';
 
 const roleHelpText = {
     User: 'Users can manage rules and devices but cannot invite or remove other users',
     Owner: 'Owners have unrestricted permissions',
 }
 
+const inviteValidationSchema = Yup.object().shape({
+    email: Yup.string().email('Please enter a valid email').required('Please enter a valid email'),
+    role: Yup.string().oneOf(['User', 'Owner'], 'Please enter a valid role')
+})
+
 const enhance = compose(
-    withForm({})
+    withForm({
+        validationSchema: inviteValidationSchema
+    })
 )
 
 export const InviteUserForm = enhance(({handleSubmit, handleClose, submitText, ...props}) => {
