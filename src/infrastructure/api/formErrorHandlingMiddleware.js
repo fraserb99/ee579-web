@@ -13,6 +13,10 @@ export default () => next => action => {
 		}
 		toastr.error('There was a problem submitting the form, Please try again')
 	}
+
+	if (action.type === 'SUCCESS' && action.meta.onSuccess) {
+		action.meta.onSuccess()
+	}
 	
 	return next(action);
 };

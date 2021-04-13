@@ -13,5 +13,15 @@ export function removeUser(id) {
     return apiCall(REMOVE_USER, appendUrl(`tenants/users/${id}`), {
         successText: "Successfully revoked user's access",
         path: ['users', id]
-     }, null, 'DELETE')
+    }, null, 'DELETE')
+}
+
+export const INVITE_USER = 'INVITE_USER';
+export function inviteUser(values, form, onSuccess) {
+    return apiCall(INVITE_USER, appendUrl(`tenants/invite`), {
+        successText: "User invitation sent",
+        form,
+        onSuccess,
+        schema: UsersSchema
+    }, values, 'POST');
 }

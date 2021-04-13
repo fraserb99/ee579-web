@@ -9,7 +9,6 @@ function* signInSuccess(action) {
         payload: action.payload
     });
     // yield put(getCurrentUser());
-    const { history } = action.meta;
     if (action.meta.redirectUrl) {
         yield call(() => history.push(action.meta.redirectUrl));
     } else {
