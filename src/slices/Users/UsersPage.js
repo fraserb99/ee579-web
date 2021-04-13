@@ -9,6 +9,7 @@ import { DeleteIconButton } from '../../components/Buttons/DeleteIconButton';
 import { useDeleteDialog } from '../../components/DeleteDialog/useDeleteDialog';
 import { useError } from '../../infrastructure/api/hooks/useError';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
+import { useCurrentRole } from '../Session/hooks';
 import { removeUser } from './actions';
 import { EditRoleModal } from './forms/EditRoleModal';
 import { InviteUserModal } from './forms/InviteUserModal';
@@ -21,7 +22,7 @@ const theme = createMuiTheme({
     }
 })
 
-const userCols = ({handleDelete, classes, handleShowRoleModal}) => [
+const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) => [
     {
         field: 'name',
         headerName: 'Name',
@@ -67,7 +68,8 @@ const userCols = ({handleDelete, classes, handleShowRoleModal}) => [
                     onClick={handleDelete(params.row)}
                 />
             </>
-        )
+        ),
+        hide: currentRole !== 'Owner'
     }
 ]
 
@@ -97,6 +99,7 @@ export const UsersPage = () => {
     const dispatch = useDispatch();
     const { url } = useRouteMatch();
     const history = useHistory();
+    const currentRole = useCurrentRole();
 
     const [open, setOpen] = useState(false);
 
@@ -140,7 +143,7 @@ export const UsersPage = () => {
                 <DataGrid
                     className={classes.table}
                     rows={users}
-                    columns={userCols({handleDelete, classes, handleShowRoleModal})}
+                    columns={userCols({handleDelete, classes, handleShowRoleModal, currentRole})}
                     pageSize={10}
                     disableColumnSelector
                     disableColumnReorder

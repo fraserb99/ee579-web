@@ -18,7 +18,7 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { AccountCircle, ArrowDropDown, ArrowDropDownCircleOutlined, ArrowDropDownCircleRounded, ArrowDropDownOutlined, ArrowDropDownRounded, Dashboard, DeveloperBoard, ExitToApp, ExpandLess, ExpandMore, Layers, People, ScatterPlot, Settings, SwapHorizRounded } from '@material-ui/icons';
+import { AccountCircle, ArrowDropDown, ArrowDropDownCircleOutlined, ArrowDropDownCircleRounded, ArrowDropDownOutlined, ArrowDropDownRounded, Dashboard, DeveloperBoard, ExitToApp, ExpandLess, ExpandMore, Layers, People, ScatterPlot, Settings, SwapHorizRounded, ViewCarousel } from '@material-ui/icons';
 import { Accordion, AccordionSummary, Collapse, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, useMediaQuery } from '@material-ui/core';
 import { useCurrentUser, useSession } from '../../slices/Session/hooks';
 import { Redirect, Route, useHistory, useLocation } from 'react-router-dom';
@@ -272,11 +272,26 @@ export const NavContainer = enhance(({children}) => {
               <ListItemText primary="Device Groups" />
             </ListItem>
         </List>
+        
+        
         </div>
         <div>
         <List>
+          <ListItem 
+            button 
+            onClick={() => {}}
+            style={{paddingLeft: '10px'}}
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <ViewCarousel fontSize='large'/>
+            </ListItemIcon>
+            <ListItemText style={{paddingLeft: '4px'}} primary="Switch Tenant" />
+          </ListItem>
+        </List>
+        <Divider />
+        <List>
             <Collapse in={accountOpen} timeout="auto" unmountOnExit>
-              <Divider />
+              
               <List component="div" disablePadding>
                 <ListItem 
                   button 

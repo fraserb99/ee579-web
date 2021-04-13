@@ -12,5 +12,9 @@ const hydrateTenants = state =>
 const selectCurrentTenantId = state => state.session.get('currentTenant');
 
 export const selectCurrentTenant = state => hydrateTenant(state, selectCurrentTenantId(state));
+export const selectCurrentRole = state => {
+    const tenant = selectCurrentTenant(state);
 
+    return tenant ? tenant.role : null;
+}
 export const selectTenants = state => hydrateTenants(state);
