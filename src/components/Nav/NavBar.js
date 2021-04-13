@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Button, IconButton, ListItemIcon, ListItemText, makeStyles, Menu, MenuItem, Typography } from '@material-ui/core';
+import { Button, CircularProgress, IconButton, ListItemIcon, ListItemText, makeStyles, Menu, MenuItem, Typography } from '@material-ui/core';
 import { ExpandMore, Menu as MenuIcon, MoreVert, Security } from '@material-ui/icons';
 import { useNavStyles } from './useNavStyles';
 import { useCurrentTenant } from '../../slices/Tenants/hooks';
@@ -153,46 +153,9 @@ export const NavBar = ({handleDrawerToggle, drawerOpen}) => {
                 <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                <Button variant='text' color='inherit' onClick={handleMenuOpen}>
-                    <Typography component="h1" variant="h6" className={classes.title}>
-                    {currentTenant && currentTenant.name}
-                    <ExpandMore fontSize='large' />
-                    </Typography>
-                </Button>
+              {currentTenant ? currentTenant.name : <CircularProgress />}
             </Typography>
-          
-            <IconButton color='inherit' edge='end' style={{float: 'right'}}>
-                <MoreVert />
-            </IconButton>
         </Toolbar>
-        <Menu
-            id="long-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={menuOpen}
-            onClose={handleMenuClose}
-            PaperProps={{
-              style: {
-                maxHeight: 300,
-                width: '40ch',
-              },
-            }}
-            transformOrigin={{
-              vertical: -40,
-            }}
-        >
-            <MenuItem disabled>
-              {currentTenant && currentTenant.name}
-            </MenuItem>
-            {tenants && tenants.map(x => 
-              <MenuItem>
-                    <ListItemIcon>
-                        <Security />
-                    </ListItemIcon>
-                <ListItemText primary={x.name} />
-              </MenuItem>
-            )}
-          </Menu>
       </AppBar>
     )
 }

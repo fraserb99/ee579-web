@@ -193,6 +193,7 @@ export const NavContainer = enhance(({children}) => {
 
   const handleSignOut = () => {
     dispatch(clearSession())
+    dispatch({type: 'RESET_ENTITIES'})
     history.push('/signin')
   }
 

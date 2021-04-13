@@ -3,28 +3,27 @@ import { compose } from 'recompose';
 import { formContainer } from '../../../infrastructure/form/formContainer';
 import * as actions from '../actions';
 import { FormModal } from '../../../infrastructure/form/FormModal';
-import { InviteUserForm } from './InviteUserForm';
+import { TenantForm } from './TenantForm';
 
 const enhance = compose(
     formContainer(
-        'Invite User',
-        'Invite',
-        (state, props) => ({ 
-            email: '',
-            role: 'User'
+        'Add Tenant',
+        'Save',
+        (state, props) => ({
+            name: ''
         }),
-        actions => actions.inviteUser,
+        actions => actions.createTenant,
         actions
     )
 )
 
-const Form = enhance(InviteUserForm);
+const Form = enhance(TenantForm);
 
-export const InviteUserModal = (props) => {
+export const AddTenantModal = ({title, path, ...props}) => {
 
     return (
         <FormModal 
-            title={'Invite User'}
+            title={'Add Tenant'}
             component={Form}
             {...props}
         />

@@ -13,7 +13,7 @@ export const useTenantUsers = () => {
 
     useEffect(() => {
         dispatch(getUsers())
-    }, [dispatch, currentTenant])
+    }, [dispatch, currentTenant]);
 
     return tenantUsers;
 }

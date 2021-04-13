@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export const SwitchTenantModal = () => {
+export const SwitchTenantModal = ({handleCreate}) => {
     const classes = useStyles();
     const [open, setOpen] = useContext(TenantModalContext);
 
@@ -37,7 +37,6 @@ export const SwitchTenantModal = () => {
             }
         });
         dispatch(switchTenant(id));
-        // history.push('/');
     }
 
     return (
@@ -70,18 +69,20 @@ export const SwitchTenantModal = () => {
                         onClick={handleSwitchTenant(x.id)}
                     >
                         <ListItemText inset primary={x.name} />
-                        <ListItemSecondaryAction>
-                            <IconButton edge="end" color='primary'>
-                                <Edit />
-                            </IconButton>
-                        </ListItemSecondaryAction>
+                        {x.role === 'Owner' &&
+                            <ListItemSecondaryAction>
+                                <IconButton edge="end" color='primary'>
+                                    <Edit />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        }
                     </ListItem>
                 )}
             </List>
             </Scrollbars>
             <Divider />
             <List>
-                <ListItem autoFocus button onClick={() => {}}>
+                <ListItem autoFocus button onClick={handleCreate}>
                     <ListItemAvatar>
                         <Avatar>
                             <Add />

@@ -12,6 +12,7 @@ import { AccountCreatedPage } from './slices/Session/AccountCreatedPage';
 import { Snackbars } from './components/Snackbar/Snackbars';
 import { SwitchTenantModal } from './slices/Tenants/SwitchTenantModal';
 import { TenantModalContext } from './slices/Tenants/TenantModalContext';
+import { TenantModals } from './slices/Tenants/TenantModals';
 
 const theme = createMuiTheme({
   palette: {
@@ -39,7 +40,7 @@ function App() {
               <Route path='/account-created' component={AccountCreatedPage} />
               <Route path='/' component={NavContainer} />
             </Switch>
-            <SwitchTenantModal />
+            <TenantModals />
           </TenantModalContext.Provider>
         </ConnectedRouter>
       </div>
