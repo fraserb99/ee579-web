@@ -7,3 +7,10 @@ export function getUsers() {
         schema: UsersSchema
     })
 }
+
+export const REMOVE_USER = 'REMOVE_USER';
+export function removeUser(id) {
+    return apiCall(REMOVE_USER, appendUrl(`tenants/users/${id}`), {
+        successText: "Successfully revoked user's access"
+     }, null, 'DELETE')
+}
