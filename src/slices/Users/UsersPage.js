@@ -1,6 +1,6 @@
 import { colors, createMuiTheme, Fab, Grid, IconButton, makeStyles, MuiThemeProvider, Paper, Typography } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import { Add, CheckCircle, Delete, Edit, InsertInvitationRounded, Mail } from '@material-ui/icons';
+import { Add, CheckCircle, Delete, Edit, InsertInvitationRounded, Mail, Person, PersonOutline, PersonOutlined, Security } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router';
@@ -16,9 +16,15 @@ import { InviteUserModal } from './forms/InviteUserModal';
 import { useTenantUsers } from './hooks/useTenantUsers';
 import './table.css';
 
-const theme = createMuiTheme({
+const statusTheme = createMuiTheme({
     palette: {
         secondary: colors.green,
+    }
+})
+
+const roleTheme = createMuiTheme({
+    palette: {
+        secondary: colors.amber,
     }
 })
 
@@ -38,13 +44,23 @@ const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) => 
         field: 'role',
         headerName: 'Role',
         flex: 0.4,
+        renderCell: params => (
+            <MuiThemeProvider theme={roleTheme}>
+                {params.value === 'Owner' ? 
+                    <Security className={classes.statusIcon} fontSize='small' color='secondary' /> 
+                    :
+                    <PersonOutline className={classes.statusIcon} fontSize='small' />
+                }
+                {params.value}
+            </MuiThemeProvider>
+        )
     },
     {
         field: 'status',
         headerName: 'Status',
         flex: 0.5,
         renderCell: params => (
-            <MuiThemeProvider theme={theme}>
+            <MuiThemeProvider theme={statusTheme}>
                 {params.value === 'Active' ? 
                     <CheckCircle className={classes.statusIcon} fontSize='small' color='secondary' /> 
                     : 
