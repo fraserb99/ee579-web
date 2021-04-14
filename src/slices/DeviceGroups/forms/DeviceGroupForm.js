@@ -11,7 +11,8 @@ import { useDevices } from "../../Devices/hooks/useDevices";
 import { AutoCompleteRow } from "../../../components/Form/AutocompleteRow";
 
 const devicegroupValidationSchema = Yup.object().shape({
-    name: Yup.string().required('Please enter a name')
+    name: Yup.string().required('Please enter a name'),
+    devices: Yup.array(Yup.object()).min(1, 'Please add at least one device')
 })
 
 const enhance = compose(

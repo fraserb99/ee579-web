@@ -11,7 +11,10 @@ const enhance = compose(
     formContainer(
         'Add Device Group',
         'Save',
-        (state, props) => props.item,
+        (state, props) => ({
+            name: '',
+            devices: []
+        }),
         actions => actions.createDeviceGroup,
         actions
     )
