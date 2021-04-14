@@ -22,7 +22,7 @@ const statusTheme = createMuiTheme({
     }
 })
 
-const roleTheme = createMuiTheme({
+export const roleTheme = createMuiTheme({
     palette: {
         secondary: colors.amber,
     }
