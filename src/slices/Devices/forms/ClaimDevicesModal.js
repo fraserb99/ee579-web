@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useDispatch } from 'react-redux';
 import { useLoading } from '../../../infrastructure/api/hooks/useLoading';
-import { getUnclaimed } from '../actions';
+import { getUnclaimed, identifyDevice } from '../actions';
 import { useUnclaimedDevices } from '../hooks/useUnclaimedDevices';
 import { AddDeviceModal } from './AddDeviceModal';
 
@@ -41,6 +41,10 @@ const ClaimStep = ({...props}) => {
         dispatch(getUnclaimed());
     }
 
+    const handleIdentify = device => () => {
+        dispatch(identifyDevice(device.id));
+    }
+
     const handleShowAdd = device => () => {
         setItem(device);
         setShowAdd(true);
@@ -68,7 +72,7 @@ const ClaimStep = ({...props}) => {
                             </ListItemIcon>
                             <ListItemText primary={x.id} />
                             <ListItemSecondaryAction>
-                                <IconButton edge="end" color='primary' onClick={handleShowAdd}>
+                                <IconButton edge="end" color='primary' onClick={handleIdentify(x)}>
                                     <WbIncandescent />
                                 </IconButton>
                             </ListItemSecondaryAction>

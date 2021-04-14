@@ -1,6 +1,6 @@
 import { colors, createMuiTheme, Fab, Grid, IconButton, makeStyles, MuiThemeProvider, Paper, Typography } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import { Add, CheckCircle, Delete, Edit, InsertInvitationRounded, Mail } from '@material-ui/icons';
+import { Add, CheckCircle, Delete, Edit, InsertInvitationRounded, Mail, WbIncandescent } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router';
@@ -11,7 +11,7 @@ import { DataTable } from '../../components/Table/DataTable';
 import { useError } from '../../infrastructure/api/hooks/useError';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 import { useCurrentRole } from '../Session/hooks';
-import { removeDevice } from './actions';
+import { identifyDevice, removeDevice } from './actions';
 import { ClaimDevicesModal } from './forms/ClaimDevicesModal';
 import { EditDeviceModal } from './forms/EditDeviceModal';
 import { useDevices } from './hooks/useDevices';
@@ -22,7 +22,7 @@ const theme = createMuiTheme({
     }
 })
 
-const deviceCols = ({handleDelete, classes, handleShowEditModal, currentRole}) => [
+const deviceCols = ({handleDelete, handleShowEditModal, handleIdentify}) => [
     {
         field: 'name',
         headerName: 'Name',
@@ -35,6 +35,9 @@ const deviceCols = ({handleDelete, classes, handleShowEditModal, currentRole}) =
         flex: 1,
         renderCell: (params) => (
             <>
+                <IconButton color='secondary' onClick={handleIdentify(params.row)}>
+                    <WbIncandescent fontSize='small' />
+                </IconButton>
                 <IconButton color='primary' onClick={handleShowEditModal(params.row)}>
                     <Edit fontSize='small' />
                 </IconButton>
@@ -91,6 +94,10 @@ export const DevicesPage = () => {
         })
     }
 
+    const handleIdentify = device => () => {
+        dispatch(identifyDevice(device.id));
+    }
+
     const handleClaimDevices = () => {
         setClaimOpen(true);
     }
@@ -121,7 +128,13 @@ export const DevicesPage = () => {
                 <DataTable
                     name='devices'
                     rows={devices}
-                    columns={deviceCols({handleDelete, classes, handleShowEditModal, currentRole})}
+                    columns={deviceCols({
+                        handleDelete,
+                        classes,
+                        handleShowEditModal,
+                        handleIdentify,
+                        currentRole
+                    })}
                     loading={loading}
                     error={error}
                 />

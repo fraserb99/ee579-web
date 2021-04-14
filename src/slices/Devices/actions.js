@@ -15,6 +15,13 @@ export function getUnclaimed() {
     })
 }
 
+export const IDENTIFY_DEVICE = 'IDENTIFY_DEVICE';
+export function identifyDevice(id) {
+    return apiCall(IDENTIFY_DEVICE, appendUrl(`devices/${id}/identify`), {
+        successText: "Flashing the the device LED",
+    }, null, 'POST')
+}
+
 export const REMOVE_DEVICE = 'REMOVE_DEVICE';
 export function removeDevice(id) {
     return apiCall(REMOVE_DEVICE, appendUrl(`devices/${id}/unclaim`), {
