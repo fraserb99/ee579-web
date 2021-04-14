@@ -85,7 +85,8 @@ export const DevicesPage = () => {
             open: true,
             deleteText: `Are you sure you want to remove ${device.name} from this tenant?`,
             helperText: 'This will not delete the device. You will still be able to claim add this device to this or another tenant later',
-            deleteAction: () => dispatch(removeDevice(device.id))
+            deleteAction: () => dispatch(removeDevice(device.id)),
+            btnText: 'Unclaim'
         })
     }
 

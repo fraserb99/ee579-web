@@ -112,7 +112,8 @@ export const UsersPage = () => {
         setDeleteState({
             open: true,
             deleteText: `Are you sure you want to revoke ${user.name || user.email}'s access to this tenant?`,
-            deleteAction: () => dispatch(removeUser(user.id))
+            deleteAction: () => dispatch(removeUser(user.id)),
+            btnText: 'Revoke'
         })
     }
 

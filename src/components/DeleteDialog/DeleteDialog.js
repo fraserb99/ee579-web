@@ -1,7 +1,13 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { Button, colors, createMuiTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MuiThemeProvider } from '@material-ui/core';
 import React, { useContext } from 'react';
 import { DeleteContext } from './DeleteContext';
 import { useDeleteState } from './useDeleteState';
+
+const deleteTheme = createMuiTheme({
+    palette: {
+        primary: colors.red
+    }
+})
 
 export const DeleteDialog = () => {
     const [deleteState, setDeleteState] = useDeleteState();
@@ -9,7 +15,8 @@ export const DeleteDialog = () => {
         open,
         deleteAction,
         deleteText,
-        helperText
+        helperText,
+        btnText,
     } = deleteState;
 
     const handleClose = () => {
@@ -35,9 +42,11 @@ export const DeleteDialog = () => {
             <Button onClick={handleClose}>
                 Cancel
             </Button>
-            <Button onClick={deleteAction} color="secondary" autoFocus>
-                Delete
-            </Button>
+            <MuiThemeProvider theme={deleteTheme}>
+                <Button onClick={deleteAction} color="primary" autoFocus>
+                    {btnText || 'Delete'}
+                </Button>
+            </MuiThemeProvider>
             </DialogActions>
         </Dialog>
     )
