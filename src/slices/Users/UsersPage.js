@@ -7,6 +7,7 @@ import { useHistory, useRouteMatch } from 'react-router';
 import { compose } from 'recompose';
 import { DeleteIconButton } from '../../components/Buttons/DeleteIconButton';
 import { useDeleteDialog } from '../../components/DeleteDialog/useDeleteDialog';
+import { DataTable } from '../../components/Table/DataTable';
 import { useError } from '../../infrastructure/api/hooks/useError';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 import { useCurrentRole, useCurrentUser } from '../Session/hooks';
@@ -74,7 +75,7 @@ const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole, curr
         field: 'actions',
         headerName: 'Actions',
         flex: 1,
-        renderCell: (params) => params.row.id !== currentUser.id && (
+        renderCell: (params) => params.row.id !== currentUser.id ? (
             <>
                 <IconButton color='primary' onClick={handleShowRoleModal(params.row)}>
                     <Edit fontSize='small' />
@@ -84,7 +85,7 @@ const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole, curr
                     onClick={handleDelete(params.row)}
                 />
             </>
-        ),
+        ) : '-',
         hide: currentRole !== 'Owner'
     }
 ]
@@ -159,17 +160,12 @@ export const UsersPage = () => {
                         <Add fontSize='large' />
                     </IconButton>
                 </Typography>
-                <DataGrid
-                    className={classes.table}
+                <DataTable
+                    name='devices'
                     rows={users}
                     columns={userCols({handleDelete, classes, handleShowRoleModal, currentRole, currentUser})}
-                    pageSize={10}
-                    disableColumnSelector
-                    disableColumnReorder
-                    disableSelectionOnClick
-                    autoHeight
-                    loading={loading && !users.length}
-                    error={error && !users || undefined}
+                    loading={loading}
+                    error={error}
                 />
             </Paper>
             <InviteUserModal
