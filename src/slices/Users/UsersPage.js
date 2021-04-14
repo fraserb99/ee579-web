@@ -9,7 +9,7 @@ import { DeleteIconButton } from '../../components/Buttons/DeleteIconButton';
 import { useDeleteDialog } from '../../components/DeleteDialog/useDeleteDialog';
 import { useError } from '../../infrastructure/api/hooks/useError';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
-import { useCurrentRole } from '../Session/hooks';
+import { useCurrentRole, useCurrentUser } from '../Session/hooks';
 import { removeUser } from './actions';
 import { EditRoleModal } from './forms/EditRoleModal';
 import { InviteUserModal } from './forms/InviteUserModal';
@@ -28,7 +28,7 @@ export const roleTheme = createMuiTheme({
     }
 })
 
-const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) => [
+const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole, currentUser}) => [
     {
         field: 'name',
         headerName: 'Name',
@@ -74,7 +74,7 @@ const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) => 
         field: 'actions',
         headerName: 'Actions',
         flex: 1,
-        renderCell: (params) => (
+        renderCell: (params) => params.row.id !== currentUser.id && (
             <>
                 <IconButton color='primary' onClick={handleShowRoleModal(params.row)}>
                     <Edit fontSize='small' />
@@ -117,6 +117,7 @@ export const UsersPage = () => {
     const { url } = useRouteMatch();
     const history = useHistory();
     const currentRole = useCurrentRole();
+    const currentUser = useCurrentUser();
 
     const [open, setOpen] = useState(false);
 
@@ -161,7 +162,7 @@ export const UsersPage = () => {
                 <DataGrid
                     className={classes.table}
                     rows={users}
-                    columns={userCols({handleDelete, classes, handleShowRoleModal, currentRole})}
+                    columns={userCols({handleDelete, classes, handleShowRoleModal, currentRole, currentUser})}
                     pageSize={10}
                     disableColumnSelector
                     disableColumnReorder
