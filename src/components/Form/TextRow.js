@@ -10,7 +10,7 @@ const renderField = ({ field, placeholder, required, autoFocus, label, form, inp
         <TextField
             label={label}
             name={field.name}
-            error={fieldTouched && fieldError}
+            error={!!fieldTouched && !!fieldError}
             helperText={fieldTouched && fieldError}
             {...field}
             {...custom}

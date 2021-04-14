@@ -1,5 +1,6 @@
 import { call, put, takeEvery } from "@redux-saga/core/effects";
 import { toastr } from "react-redux-toastr";
+import { DELETE_DEVICEGROUP } from "../../slices/DeviceGroups/actions";
 import { REMOVE_DEVICE } from "../../slices/Devices/actions";
 import { REMOVE_USER } from "../../slices/Users/actions";
 import { showSuccessSnackbar } from "../Snackbar/actions";
@@ -15,7 +16,7 @@ function* deleteSuccess(action) {
 }
 
 function* makeListeners() {
-    const targets = [REMOVE_USER, REMOVE_DEVICE]
+    const targets = [REMOVE_USER, REMOVE_DEVICE, DELETE_DEVICEGROUP]
     yield(takeEvery(x => x.type === 'SUCCESS' && targets.includes(x.meta.type), deleteSuccess));
 }
 
