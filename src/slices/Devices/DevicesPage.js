@@ -11,6 +11,7 @@ import { useError } from '../../infrastructure/api/hooks/useError';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 import { useCurrentRole } from '../Session/hooks';
 import { removeDevice } from './actions';
+import { EditDeviceModal } from './forms/EditDeviceModal';
 import { useDevices } from './hooks/useTenantUsers';
 
 const theme = createMuiTheme({
@@ -19,7 +20,7 @@ const theme = createMuiTheme({
     }
 })
 
-const deviceCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) => [
+const deviceCols = ({handleDelete, classes, handleShowEditModal, currentRole}) => [
     {
         field: 'name',
         headerName: 'Name',
@@ -32,7 +33,7 @@ const deviceCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) =
         flex: 1,
         renderCell: (params) => (
             <>
-                <IconButton color='primary' onClick={handleShowRoleModal(params.row)}>
+                <IconButton color='primary' onClick={handleShowEditModal(params.row)}>
                     <Edit fontSize='small' />
                 </IconButton>
                 <DeleteIconButton 
@@ -74,7 +75,7 @@ export const DevicesPage = () => {
 
     const [open, setOpen] = useState(false);
 
-    const [roleOpen, setRoleOpen] = useState(false);
+    const [editOpen, setEditOpen] = useState(false);
     const [item, setItem] = useState();
 
     const handleDelete = (device) => () => {
@@ -91,13 +92,13 @@ export const DevicesPage = () => {
         setOpen(state);
     }
 
-    const handleShowRoleModal = (item) => () => {
+    const handleShowEditModal = (item) => () => {
         setItem(item);
-        setRoleOpen(true);
+        setEditOpen(true);
     }
 
-    const handleCloseRoleModal = () => {
-        setRoleOpen(false)
+    const handleCloseEditModal = () => {
+        setEditOpen(false)
         setTimeout(() => setItem(null), 1000);
     }
 
@@ -113,7 +114,7 @@ export const DevicesPage = () => {
                 <DataGrid
                     className={classes.table}
                     rows={devices}
-                    columns={deviceCols({handleDelete, classes, handleShowRoleModal, currentRole})}
+                    columns={deviceCols({handleDelete, classes, handleShowEditModal, currentRole})}
                     pageSize={10}
                     disableColumnSelector
                     disableColumnReorder
@@ -127,13 +128,13 @@ export const DevicesPage = () => {
                 show={open}
                 setShow={setOpen}
                 onSuccess={handleInviteModalOpen(false)}
-            />
-            <EditRoleModal
-                show={roleOpen}
-                setShow={handleCloseRoleModal}
-                item={item}
-                onSuccess={handleCloseRoleModal}
             /> */}
+            <EditDeviceModal
+                show={editOpen}
+                setShow={handleCloseEditModal}
+                item={item}
+                onSuccess={handleCloseEditModal}
+            />
         </React.Fragment>
     )
 }
