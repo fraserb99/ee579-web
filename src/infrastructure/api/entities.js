@@ -13,5 +13,8 @@ export const TenantSchema = new schema.Entity('tenants', {
 }, { idAttribute });
 export const TenantsSchema = [TenantSchema];
 
+export const DeviceSchema = new schema.Entity('devices', {}, { idAttribute });
+export const DevicesSchema = [DeviceSchema];
+
 export const DeviceGroupSchema = new schema.Entity('devicegroups', {}, { idAttribute });
 export const DeviceGroupsSchema = [DeviceGroupSchema];

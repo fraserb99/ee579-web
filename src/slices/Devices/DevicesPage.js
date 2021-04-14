@@ -10,11 +10,8 @@ import { useDeleteDialog } from '../../components/DeleteDialog/useDeleteDialog';
 import { useError } from '../../infrastructure/api/hooks/useError';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 import { useCurrentRole } from '../Session/hooks';
-import { removeUser } from './actions';
-import { EditRoleModal } from './forms/EditRoleModal';
-import { InviteUserModal } from './forms/InviteUserModal';
-import { useTenantUsers } from './hooks/useTenantUsers';
-import './table.css';
+import { removeDevice } from './actions';
+import { useDevices } from './hooks/useTenantUsers';
 
 const theme = createMuiTheme({
     palette: {
@@ -22,37 +19,12 @@ const theme = createMuiTheme({
     }
 })
 
-const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) => [
+const deviceCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) => [
     {
         field: 'name',
         headerName: 'Name',
         flex: 1,
         valueFormatter: params => params.value ? params.value : '-'
-    },
-    {
-        field: 'email',
-        headerName: 'Email',
-        flex: 1
-    },
-    {
-        field: 'role',
-        headerName: 'Role',
-        flex: 0.4,
-    },
-    {
-        field: 'status',
-        headerName: 'Status',
-        flex: 0.5,
-        renderCell: params => (
-            <MuiThemeProvider theme={theme}>
-                {params.value === 'Active' ? 
-                    <CheckCircle className={classes.statusIcon} fontSize='small' color='secondary' /> 
-                    : 
-                    <Mail className={classes.statusIcon} fontSize='small' color='primary'/>
-                }
-                {params.value}
-            </MuiThemeProvider>
-        )
     },
     {
         field: 'actions',
@@ -69,14 +41,12 @@ const userCols = ({handleDelete, classes, handleShowRoleModal, currentRole}) => 
                 />
             </>
         ),
-        hide: currentRole !== 'Owner'
     }
 ]
 
 const useStyles = makeStyles(theme => ({
     table: {
-        padding: theme.spacing(0, 1),
-        borderTop: 'none'
+        padding: theme.spacing(0, 1)
     },
     fab: {
         position: 'absolute',
@@ -91,11 +61,11 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export const UsersPage = () => {
+export const DevicesPage = () => {
     const classes = useStyles();
-    const users = useTenantUsers();
-    const loading = useLoading('users');
-    const error = useError('users');
+    const devices = useDevices();
+    const loading = useLoading('devices');
+    const error = useError('devices');
     const setDeleteState = useDeleteDialog();
     const dispatch = useDispatch();
     const { url } = useRouteMatch();
@@ -107,12 +77,13 @@ export const UsersPage = () => {
     const [roleOpen, setRoleOpen] = useState(false);
     const [item, setItem] = useState();
 
-    const handleDelete = (user) => () => {
-        console.log(user);
+    const handleDelete = (device) => () => {
+        console.log(device);
         setDeleteState({
             open: true,
-            deleteText: `Are you sure you want to revoke ${user.name || user.email}'s access to this tenant?`,
-            deleteAction: () => dispatch(removeUser(user.id))
+            deleteText: `Are you sure you want to remove ${device.name} from this tenant?`,
+            helperText: 'This will not delete the device. You will still be able to claim add this device to this or another tenant later',
+            deleteAction: () => dispatch(removeDevice(device.id))
         })
     }
 
@@ -130,31 +101,29 @@ export const UsersPage = () => {
         setTimeout(() => setItem(null), 1000);
     }
 
-    console.log(roleOpen);
-
     return (
         <React.Fragment>
             <Paper>
                 <Typography variant='h3' className={classes.title}>
-                    Users
+                    Devices
                     <IconButton size='medium' color='secondary' onClick={handleInviteModalOpen(true)}>
                         <Add fontSize='large' />
                     </IconButton>
                 </Typography>
                 <DataGrid
                     className={classes.table}
-                    rows={users}
-                    columns={userCols({handleDelete, classes, handleShowRoleModal, currentRole})}
+                    rows={devices}
+                    columns={deviceCols({handleDelete, classes, handleShowRoleModal, currentRole})}
                     pageSize={10}
                     disableColumnSelector
                     disableColumnReorder
                     disableSelectionOnClick
                     autoHeight
-                    loading={loading && !users.length}
-                    error={error && !users || undefined}
+                    loading={loading && !devices.length}
+                    error={error && !devices || undefined}
                 />
             </Paper>
-            <InviteUserModal
+            {/* <InviteUserModal
                 show={open}
                 setShow={setOpen}
                 onSuccess={handleInviteModalOpen(false)}
@@ -164,7 +133,7 @@ export const UsersPage = () => {
                 setShow={handleCloseRoleModal}
                 item={item}
                 onSuccess={handleCloseRoleModal}
-            />
+            /> */}
         </React.Fragment>
     )
 }

@@ -70,7 +70,7 @@ export const SwitchTenantModal = ({handleCreate, handleEdit}) => {
                         button
                         onClick={handleSwitchTenant(x.id)}
                     >
-                        <ListItemText inset primary={x.name} />
+                        <ListItemText primary={x.name} />
                         {x.role === 'Owner' &&
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" color='primary' onClick={handleEdit(x)}>

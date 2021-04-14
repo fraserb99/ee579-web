@@ -6,12 +6,14 @@ import { UsersPage } from '../../slices/Users/UsersPage';
 import { DeleteDialog } from '../../components/DeleteDialog/DeleteDialog';
 import { DeleteContext } from '../../components/DeleteDialog/DeleteContext';
 import { useDeleteState } from '../../components/DeleteDialog/useDeleteState';
+import { DevicesPage } from '../../slices/Devices/DevicesPage';
 
 export const AuthedRoutes = () => {
     return (
         <>
             <Switch>
                 <Route path='/rules' component={RulesPage} />
+                <Route path='/devices' component={DevicesPage} />
                 <Route path='/devices/add' component={AddDevicePage} />
                 <Route path='/users' component={UsersPage} />
             </Switch>
