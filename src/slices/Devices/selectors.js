@@ -9,4 +9,6 @@ const hydrateDevices = state =>
     )
     .map(id => hydrateDevice(state, id));
 
-export const selectDevices = state => hydrateDevices(state);
+export const selectDevices = state => hydrateDevices(state).filter(x => x.deviceState === 'Claimed');
+
+export const selectUnclaimed = state => hydrateDevices(state).filter(x => x.deviceState === 'Unclaimed')

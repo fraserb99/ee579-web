@@ -11,8 +11,9 @@ import { useError } from '../../infrastructure/api/hooks/useError';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 import { useCurrentRole } from '../Session/hooks';
 import { removeDevice } from './actions';
+import { ClaimDevicesModal } from './forms/ClaimDevicesModal';
 import { EditDeviceModal } from './forms/EditDeviceModal';
-import { useDevices } from './hooks/useTenantUsers';
+import { useDevices } from './hooks/useDevices';
 
 const theme = createMuiTheme({
     palette: {
@@ -73,7 +74,7 @@ export const DevicesPage = () => {
     const history = useHistory();
     const currentRole = useCurrentRole();
 
-    const [open, setOpen] = useState(false);
+    const [claimOpen, setClaimOpen] = useState(false);
 
     const [editOpen, setEditOpen] = useState(false);
     const [item, setItem] = useState();
@@ -88,8 +89,12 @@ export const DevicesPage = () => {
         })
     }
 
-    const handleInviteModalOpen = (state) => () => {
-        setOpen(state);
+    const handleClaimDevices = () => {
+        setClaimOpen(true);
+    }
+
+    const handleCloseClaim = () => {
+        setClaimOpen(false);
     }
 
     const handleShowEditModal = (item) => () => {
@@ -107,7 +112,7 @@ export const DevicesPage = () => {
             <Paper>
                 <Typography variant='h3' className={classes.title}>
                     Devices
-                    <IconButton size='medium' color='secondary' onClick={handleInviteModalOpen(true)}>
+                    <IconButton size='medium' color='secondary' onClick={handleClaimDevices}>
                         <Add fontSize='large' />
                     </IconButton>
                 </Typography>
@@ -135,6 +140,7 @@ export const DevicesPage = () => {
                 item={item}
                 onSuccess={handleCloseEditModal}
             />
+            {claimOpen && <ClaimDevicesModal handleClose={handleCloseClaim} />}
         </React.Fragment>
     )
 }

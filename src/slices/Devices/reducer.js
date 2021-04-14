@@ -1,6 +1,6 @@
 import { Map } from "immutable";
 import ApiReducer, { states } from "../../infrastructure/api/apiReducer";
-import { GET_DEVICES, REMOVE_DEVICE, UPDATE_DEVICE } from "./actions";
+import { CLAIM_DEVICE, GET_DEVICES, GET_UNCLAIMED_DEVICES, REMOVE_DEVICE, UPDATE_DEVICE } from "./actions";
 
 export const initialState = new Map({
     items: [],
@@ -22,7 +22,7 @@ const apiHandlers = {
 const handlers = {
 }
 
-const apiReducer = ApiReducer([GET_DEVICES, UPDATE_DEVICE, REMOVE_DEVICE], initialState, apiHandlers);
+const apiReducer = ApiReducer([GET_DEVICES, GET_UNCLAIMED_DEVICES, UPDATE_DEVICE, REMOVE_DEVICE, CLAIM_DEVICE], initialState, apiHandlers);
 
 const reducer = (state = initialState, action) => {
 	const handler = handlers[action.type];

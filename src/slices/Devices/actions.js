@@ -8,6 +8,13 @@ export function getDevices() {
     })
 }
 
+export const GET_UNCLAIMED_DEVICES = 'GET_UNCLAIMED_DEVICES';
+export function getUnclaimed() {
+    return apiCall(GET_UNCLAIMED_DEVICES, appendUrl('devices/unclaimed'), {
+        schema: DevicesSchema
+    })
+}
+
 export const REMOVE_DEVICE = 'REMOVE_DEVICE';
 export function removeDevice(id) {
     return apiCall(REMOVE_DEVICE, appendUrl(`devices/${id}/unclaim`), {
@@ -29,6 +36,16 @@ export function removeDevice(id) {
 export const UPDATE_DEVICE = 'UPDATE_DEVICE';
 export function updateDevice(values, form, onSuccess) {
     return apiCall(UPDATE_DEVICE, appendUrl(`devices/${values.id}`), {
+        successText: "Device succesfully updated",
+        form,
+        onSuccess,
+        schema: DevicesSchema
+    }, values, 'PUT');
+}
+
+export const CLAIM_DEVICE = 'CLAIM_DEVICE';
+export function claimDevice(values, form, onSuccess) {
+    return apiCall(CLAIM_DEVICE, appendUrl(`devices/${values.id}/claim`), {
         successText: "Device succesfully updated",
         form,
         onSuccess,
