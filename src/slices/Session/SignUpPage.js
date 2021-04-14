@@ -12,6 +12,8 @@ import { SignUpForm } from './SignUpForm';
 import { Link } from '../../components/Link';
 import { GoogleLoginButton, MicrosoftLoginButton } from 'react-social-login-buttons';
 import { socialButtonStyles } from './SignInPage';
+import { useMicrosoftLogin } from './hooks/useMicrosoftLogin';
+import { useGoogleLogin } from './hooks/useGoogleLogin';
 
 function Copyright() {
   return (
@@ -48,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const SignUpPage = () => {
   const classes = useStyles();
-  const history = useHistory();
+  const microsoftLogin = useMicrosoftLogin();
+  const googleLogin = useGoogleLogin();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -65,14 +68,14 @@ export const SignUpPage = () => {
             style={{...socialButtonStyles, marginTop: '8px'}}
             align='center'
             text='Sign In with Google' 
-            onClick={() => {}}
+            onClick={useGoogleLogin}
             type='button'
           />
           <MicrosoftLoginButton
             style={socialButtonStyles}
             align='center'
             text='Sign In with Microsoft'
-            onClick={() => {}}
+            onClick={microsoftLogin}
           />
           <Grid container>
               <Grid item xs>

@@ -10,6 +10,8 @@ import Container from '@material-ui/core/Container';
 import { SignInForm } from './SignInForm';
 import { Link } from '../../components/Link';
 import { GoogleLoginButton, MicrosoftLoginButton } from 'react-social-login-buttons';
+import { useMicrosoftLogin } from './hooks/useMicrosoftLogin';
+import { useGoogleLogin } from './hooks/useGoogleLogin';
 
 function Copyright() {
   return (
@@ -58,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const SignInPage = () => {
   const classes = useStyles();
+  const microsoftLogin = useMicrosoftLogin();
+  const googleLogin = useGoogleLogin();
 
   return (
     <Container component="main" maxWidth="xs" className={classes.container}>
@@ -74,14 +78,14 @@ export const SignInPage = () => {
               style={{...socialButtonStyles, marginTop: '8px'}}
               align='center'
               text='Sign In with Google' 
-              onClick={() => {}}
+              onClick={googleLogin}
               type='button'
             />
             <MicrosoftLoginButton
               style={socialButtonStyles}
               align='center'
               text='Sign In with Microsoft'
-              onClick={() => {}}
+              onClick={microsoftLogin}
             />
             <Grid container>
                 <Grid item xs>

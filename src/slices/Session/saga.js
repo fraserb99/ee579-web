@@ -1,7 +1,8 @@
 import { call, put, takeEvery } from "@redux-saga/core/effects";
 import { push } from "connected-react-router";
 import { history } from "../..";
-import { CLEAR_SESSION, REQUEST_SIGNIN, REQUEST_SIGNUP } from "./actions";
+import { showErrorSnackbar } from "../../components/Snackbar/actions";
+import { CLEAR_SESSION, EXTERNAL_SIGNIN, REQUEST_SIGNIN, REQUEST_SIGNUP } from "./actions";
 
 function* signInSuccess(action) {
     yield put({
@@ -21,20 +22,17 @@ function* signUpSuccess(action) {
     history.push('/account-created');
 }
 
-function* signInFailure(action) {
-    console.log(action);
-    // action.meta.form.setErrors({
-    //     email: 'Invalid email or password',
-    //     password: 'Invalid email or password'
-    // })
+function* externalFailure() {
+    history.push('/signin');
+    yield put(showErrorSnackbar('There was a problem signing you in, please try again'));
 }
 
 function* makeListeners() {
-    yield(takeEvery(x => x.type === 'SUCCESS' && [REQUEST_SIGNIN].includes(x.meta.type), signInSuccess));
+    yield(takeEvery(x => x.type === 'SUCCESS' && [REQUEST_SIGNIN, EXTERNAL_SIGNIN].includes(x.meta.type), signInSuccess));
     // yield(takeEvery(x => x.type === 'SUCCESS' && [REQUEST_SIGNIN, REQUEST_SIGNUP].includes(x.meta.type), signInSuccess));
     yield(takeEvery(x => x.type === 'SUCCESS' && x.meta.type === REQUEST_SIGNUP, signUpSuccess));
 
-    yield(takeEvery(x => x.type === 'FAILURE' && x.meta.type === REQUEST_SIGNIN, signInFailure));
+    yield(takeEvery(x => x.type === 'FAILURE' && x.meta.type === EXTERNAL_SIGNIN, externalFailure));
 }
 
 export default makeListeners;

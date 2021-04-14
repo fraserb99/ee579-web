@@ -13,6 +13,7 @@ import { Snackbars } from './components/Snackbar/Snackbars';
 import { SwitchTenantModal } from './slices/Tenants/SwitchTenantModal';
 import { TenantModalContext } from './slices/Tenants/TenantModalContext';
 import { TenantModals } from './slices/Tenants/TenantModals';
+import { ExternalSignInPage, GoogleExternalSignInPage, MicrosoftExternalSignInPage } from './slices/Session/ExternalLoginPage';
 
 const theme = createMuiTheme({
   palette: {
@@ -38,6 +39,8 @@ function App() {
               <Route path='/signin' component={SignInPage} />
               <Route path='/signup' component={SignUpPage} />
               <Route path='/account-created' component={AccountCreatedPage} />
+              <Route path='/google-callback' component={GoogleExternalSignInPage} />
+              <Route path='/microsoft-callback' component={MicrosoftExternalSignInPage} />
               <Route path='/' component={NavContainer} />
             </Switch>
             <TenantModals />
