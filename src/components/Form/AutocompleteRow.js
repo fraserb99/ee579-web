@@ -6,7 +6,7 @@ import React from 'react';
 const renderField = ({ field, placeholder, autoFocus, label, form, inputRef, children, helperText, ...custom }) => {
     var fieldTouched = getIn(form.touched, field.name);
     var fieldError = getIn(form.errors, field.name);
-    console.log(field);
+    
     return (
         <Autocomplete
             renderInput={(params) => (

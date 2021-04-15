@@ -1,10 +1,12 @@
+import { TextField } from '@material-ui/core';
 import { Field, getIn } from 'formik';
 import React from 'react';
-import { TextField } from '@material-ui/core';
 
 const renderField = ({ field, placeholder, required, autoFocus, label, form, inputRef, ...custom }) => {
     var fieldTouched = getIn(form.touched, field.name);
     var fieldError = getIn(form.errors, field.name);
+    if (field.name === 'outputs[0].colour')
+        console.log(custom);
     
     return (
         <TextField

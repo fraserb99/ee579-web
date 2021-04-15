@@ -11,6 +11,7 @@ export const outputIconMap = {
     LedOutput: Flare,
     LedBreathe: Flare,
     LedBlink: Flare,
+    LedFade: Flare,
     LedCycle: Refresh,
     BuzzerOn: VolumeUp,
     BuzzerBeep: VolumeUp

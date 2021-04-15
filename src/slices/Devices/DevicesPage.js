@@ -1,6 +1,6 @@
 import { colors, createMuiTheme, Fab, Grid, IconButton, makeStyles, MuiThemeProvider, Paper, Typography } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import { Add, CheckCircle, Delete, Edit, InsertInvitationRounded, Mail, WbIncandescent } from '@material-ui/icons';
+import { Add, CheckCircle, Delete, Edit, ErrorOutline, InsertInvitationRounded, Mail, NewReleases, NewReleasesTwoTone, WbIncandescent } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router';
@@ -22,12 +22,42 @@ const theme = createMuiTheme({
     }
 })
 
-const deviceCols = ({handleDelete, handleShowEditModal, handleIdentify}) => [
+const statusTheme = createMuiTheme({
+    palette: {
+        primary: colors.green,
+        secondary: colors.amber,
+        error: colors.red
+    }
+})
+
+const connectionStateIcons = (state, classes) => {
+    switch (state) {
+        case 'Connected':
+            return <CheckCircle className={classes.statusIcon} fontSize='small' color='primary' />
+        case 'Disconnected':
+            return <ErrorOutline className={classes.statusIcon} fontSize='small' color='error' />
+        case 'New':
+            return <NewReleases className={classes.statusIcon} fontSize='small' color='secondary' />
+    }
+}
+
+const deviceCols = ({handleDelete, handleShowEditModal, handleIdentify, classes}) => [
     {
         field: 'name',
         headerName: 'Name',
         flex: 1,
         valueFormatter: params => params.value ? params.value : '-'
+    },
+    {
+        field: 'connectionState',
+        headerName: 'Connection State',
+        flex: 1,
+        renderCell: params => (
+            <MuiThemeProvider theme={statusTheme}>
+                {connectionStateIcons(params.value, classes)}
+                {params.value}
+            </MuiThemeProvider>
+        )
     },
     {
         field: 'actions',

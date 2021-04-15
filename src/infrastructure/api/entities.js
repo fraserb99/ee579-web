@@ -18,3 +18,6 @@ export const DevicesSchema = [DeviceSchema];
 
 export const DeviceGroupSchema = new schema.Entity('devicegroups', {}, { idAttribute });
 export const DeviceGroupsSchema = [DeviceGroupSchema];
+
+export const RuleSchema = new schema.Entity('rules', {}, { idAttribute });
+export const RulesSchema = [RuleSchema];
