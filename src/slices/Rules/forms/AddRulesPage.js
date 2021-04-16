@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
+import { useHistory } from 'react-router';
 import { compose } from 'recompose';
 import { formContainer } from '../../../infrastructure/form/formContainer';
 import * as actions from '../actions';
@@ -42,9 +43,14 @@ const useStyles = makeStyles(theme => ({
 export const AddRulePage = () => {
     const classes = useStyles();
 
+    const history = useHistory();
+    const handleSuccess = () => history.push('/rules');
+
     return (
         <React.Fragment>
-                <Form />
+                <Form
+                    onSuccess={handleSuccess}
+                />
         </React.Fragment>
     )
 }
