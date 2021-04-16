@@ -34,14 +34,14 @@ export const ruleValidationSchema = (props) =>{
     // console.log(props);
     return Yup.object().shape({
         name: Yup.string().required('Please enter a name'),
-        inputs: Yup.array().min(2, 'At least one trigger is required').of(
+        inputs: Yup.array().min(1, 'At least one trigger is required').of(
             Yup.object().shape({
                 type: typeSchema,
                 device: deviceSchema,
                 deviceGroup: deviceGroupSchema,
             })
         ),
-        outputs: Yup.array().min(2, 'At least one trigger is required').of(
+        outputs: Yup.array().min(1, 'At least one trigger is required').of(
             Yup.object().shape({
                 type: Yup.string().required('Please select an input type'),
                 device: deviceSchema,

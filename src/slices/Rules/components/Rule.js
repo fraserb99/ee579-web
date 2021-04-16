@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(2)
     },
     rule: {
-        padding: theme.spacing(1.5)
+        padding: theme.spacing(2)
     },
     title: {
         fontWeight: 500,
@@ -54,16 +54,16 @@ export const Rule = ({rule}) => {
 
     const { 
         name,
-        inputDevices,
-        outputDevices
+        inputs,
+        outputs
     } = rule;
-    const extraInputs = inputDevices.slice(1);
-    const extraOutputs = outputDevices.slice(1);
+    const extraInputs = inputs.slice(1);
+    const extraOutputs = outputs.slice(1);
     console.log(extraInputs);
 
     return (
         <Paper className={classes.ruleContainer}>
-            <Grid container spacing={1} className={classes.rule}>
+            <Grid container className={classes.rule}>
                 <Grid item container xs={12}>
                     <Grid xs={9}>
                         <Typography component='h2' variant='h5' className={classes.title}>
@@ -93,7 +93,7 @@ export const Rule = ({rule}) => {
                         Inputs
                     </Typography>
                     <InputDevice
-                        peripheral={inputDevices[0]}
+                        peripheral={inputs[0]}
                         transitionIn
                     />
                     {!!extraInputs.length && 
@@ -138,7 +138,7 @@ export const Rule = ({rule}) => {
                         Outputs
                     </Typography>
                     <OutputDevice
-                        peripheral={outputDevices[0]}
+                        peripheral={outputs[0]}
                         transitionIn
                     />
                     {!!extraOutputs.length && 

@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { BlankState } from '../../components/BlankState/BlankState';
 import { Rule } from './components/Rule';
 import { rules } from './rulesExample';
+import { useRules } from './hooks/useRules';
 
 const useStyles = makeStyles((theme) => ({
     addBtn: {
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const RulesPage = () => {
+    const rules = useRules();
     const classes = useStyles();
     const history = useHistory();
     const handleAdd = () => {

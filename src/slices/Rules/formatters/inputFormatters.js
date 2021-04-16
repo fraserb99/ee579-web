@@ -54,5 +54,6 @@ const inputDisplayMap = {
 }
 
 export const inputDisplayFormatter = peripheral => {
-    return inputDisplayMap[peripheral.type](peripheral);
+    const formatter = inputDisplayMap[peripheral.type];
+    return formatter ? formatter(peripheral) : null;
 }
