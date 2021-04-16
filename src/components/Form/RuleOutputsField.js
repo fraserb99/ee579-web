@@ -1,5 +1,5 @@
 import { Button, Collapse, Divider, Grid, Grow, IconButton, makeStyles, MenuItem, Paper, Typography } from '@material-ui/core';
-import { Remove, Timer } from '@material-ui/icons';
+import { DeveloperBoardTwoTone, LayersTwoTone, Remove, Timer } from '@material-ui/icons';
 import { FieldArray } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -235,20 +235,20 @@ const initialTypeState = (type, values) => {
             deviceGroup: values.deviceGroup,
         },
         LedBlink: {
-            "$type": "EE579.Core.Slices.Rules.Models.Outputs.LedWithPeriodOutputDto, EE579.Core",
+            "$type": "EE579.Core.Slices.Rules.Models.Outputs.LedPeriodOutputDto, EE579.Core",
             type: 'LedBlink',
             period: 1000,
             peripheral: 'Led1',
-            colour: 'Red',
+            colour: null,
             device: values.device,
             deviceGroup: values.deviceGroup,
         },
         LedBreathe: {
-            "$type": "EE579.Core.Slices.Rules.Models.Outputs.LedWithPeriodOutputDto, EE579.Core",
+            "$type": "EE579.Core.Slices.Rules.Models.Outputs.LedPeriodOutputDto, EE579.Core",
             type: 'LedBreathe',
             period: 2000,
             peripheral: 'Led1',
-            colour: 'Red',
+            colour: null,
             device: values.device,
             deviceGroup: values.deviceGroup,
         },
@@ -261,11 +261,11 @@ const initialTypeState = (type, values) => {
             deviceGroup: values.deviceGroup,
         },
         LedFade: {
-            "$type": "EE579.Core.Slices.Rules.Models.Outputs.LedWithPeriodOutputDto, EE579.Core",
+            "$type": "EE579.Core.Slices.Rules.Models.Outputs.LedPeriodOutputDto, EE579.Core",
             type: 'LedFade',
             period: 2000,
             peripheral: 'Led1',
-            colour: 'Red',
+            colour: null,
             device: values.device,
             deviceGroup: values.deviceGroup,
         },
@@ -274,7 +274,7 @@ const initialTypeState = (type, values) => {
             type: 'LedOutput',
             value: true,
             peripheral: 'Led1',
-            colour: 'Red',
+            colour: null,
             device: values.device,
             deviceGroup: values.deviceGroup,
         },
@@ -353,7 +353,7 @@ const RuleOutput = ({fieldValue, index, remove, ...props}) => {
                                 </Typography>
                             </Grid>
                             <Grid item>
-                                {index !== 0 &&
+                                {(index !== 0 || props.values.outputs.length > 1) &&
                                     <IconButton onClick={handleRemove}>
                                         <Remove color='error' />
                                     </IconButton>
@@ -383,35 +383,46 @@ const RuleOutput = ({fieldValue, index, remove, ...props}) => {
                     <Grid item xs={12} className={classes.divider}>
                         <Divider />
                     </Grid>
-                    <Grid item xs={12} spacing={2}>
+                    <Grid container item xs={12} spacing={2}>
                         <Grid container item xs={12}>
                             <Typography variant='subtitle'>
                                 Output Device(s)
                             </Typography>
                         </Grid>
-                        <AutoCompleteRow
-                            name={`${prefix}.device`}
-                            label='Trigger Device'
-                            getOptionSelected={(option, value) => option.id === value.id}
-                            getOptionLabel={(option) => option.name}
-                            options={devices}
-                            loading={devicesLoading}
-                            helperText='Select a device you would like to trigger the rule'
-                            disabled={!!fieldValue.deviceGroup}
-                        />
-                        <Grid container item xs={12} alignItems='center' style={{paddingTop: 16}}>
+                        <Grid container item xs={2} justify='center' alignItems='center'>
+                            <DeveloperBoardTwoTone fontSize='large' />
+                        </Grid>
+                        <Grid item xs={10}>
+                            <AutoCompleteRow
+                                name={`${prefix}.device`}
+                                label='Trigger Device'
+                                getOptionSelected={(option, value) => option.id === value.id}
+                                getOptionLabel={(option) => option.name}
+                                options={devices}
+                                loading={devicesLoading}
+                                helperText='Select a device you would like to trigger the rule'
+                                disabled={!!fieldValue.deviceGroup}
+                            />
+                        </Grid>
+                        <Grid container item xs={2} alignItems='center' justify='center' style={{paddingTop: 16}}>
                             OR
                         </Grid>
-                        <AutoCompleteRow
-                            name={`${prefix}.deviceGroup`}
-                            label='Trigger Group'
-                            getOptionSelected={(option, value) => option.id === value.id}
-                            getOptionLabel={(option) => option.name}
-                            options={deviceGroups}
-                            loading={deviceGroupsLoading}
-                            helperText='Select a group of devices that should trigger the rule'
-                            disabled={!!fieldValue.device}
-                        />
+                        <Grid item xs={10} />
+                        <Grid container item xs={2} justify='center' alignItems='center'>
+                            <LayersTwoTone fontSize='large' />
+                        </Grid>
+                        <Grid item xs={10}>
+                            <AutoCompleteRow
+                                name={`${prefix}.deviceGroup`}
+                                label='Trigger Group'
+                                getOptionSelected={(option, value) => option.id === value.id}
+                                getOptionLabel={(option) => option.name}
+                                options={deviceGroups}
+                                loading={deviceGroupsLoading}
+                                helperText='Select a group of devices that should trigger the rule'
+                                disabled={!!fieldValue.device}
+                            />
+                        </Grid>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         

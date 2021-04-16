@@ -14,6 +14,7 @@ import { SwitchTenantModal } from './slices/Tenants/SwitchTenantModal';
 import { TenantModalContext } from './slices/Tenants/TenantModalContext';
 import { TenantModals } from './slices/Tenants/TenantModals';
 import { ExternalSignInPage, GoogleExternalSignInPage, MicrosoftExternalSignInPage } from './slices/Session/ExternalLoginPage';
+import Scrollbars from 'react-custom-scrollbars';
 
 const theme = createMuiTheme({
   palette: {

@@ -1,5 +1,5 @@
 import { Divider, Grid, IconButton, makeStyles, MenuItem, Paper, Slider, Typography } from '@material-ui/core';
-import { Add, ArrowBackIosRounded, ArrowBackRounded, ArrowForwardIosRounded, Equalizer, SwapHorizRounded, SwapVertRounded, Timer, Whatshot } from '@material-ui/icons';
+import { Add, ArrowBackIosRounded, ArrowBackRounded, ArrowForwardIosRounded, DeveloperBoard, Equalizer, Layers, LayersRounded, LayersTwoTone, SwapHorizRounded, SwapVertRounded, Timer, Whatshot } from '@material-ui/icons';
 import { FieldArray, getIn } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -97,8 +97,16 @@ const AnalogueProperties = ({fieldValue, index, form, handleSetFieldValue, ...pr
     }
 
     const handleChangeCommit = (e, newValue) => {
-        handleSetFieldValue('greaterThan', newValue[0]);
-        handleSetFieldValue('lessThan', newValue[1]);
+        console.log(e);
+        const {greaterThan, lessThan} = fieldValue;
+        if (greaterThan < lessThan) {
+            handleSetFieldValue('greaterThan', newValue[0]);
+            handleSetFieldValue('lessThan', newValue[1]);
+        } else {
+            handleSetFieldValue('greaterThan', newValue[1]);
+            handleSetFieldValue('lessThan', newValue[0]);
+        }
+        
         setSliderVal(null);
     }
 
@@ -269,35 +277,46 @@ const RuleInput = ({fieldValue, index, ...props}) => {
                 <Grid item xs={12} className={classes.divider}>
                     <Divider />
                 </Grid>
-                <Grid item xs={12} spacing={2}>
+                <Grid container item xs={12} spacing={2}>
                     <Grid container item xs={12}>
                         <Typography variant='subtitle'>
                             Trigger Device(s)
                         </Typography>
                     </Grid>
-                    <AutoCompleteRow
-                        name={`${prefix}.device`}
-                        label='Trigger Device'
-                        getOptionSelected={(option, value) => option.id === value.id}
-                        getOptionLabel={(option) => option.name}
-                        options={devices}
-                        loading={devicesLoading}
-                        helperText='Select a device you would like to trigger the rule'
-                        disabled={!!fieldValue.deviceGroup}
-                    />
-                    <Grid container item xs={12} alignItems='center' style={{paddingTop: 16}}>
+                    <Grid container item xs={2} justify='center' alignItems='center'>
+                        <DeveloperBoard fontSize='large' />
+                    </Grid>
+                    <Grid item xs={10}>
+                        <AutoCompleteRow
+                            name={`${prefix}.device`}
+                            label='Trigger Device'
+                            getOptionSelected={(option, value) => option.id === value.id}
+                            getOptionLabel={(option) => option.name}
+                            options={devices}
+                            loading={devicesLoading}
+                            helperText='Select a device you would like to trigger the rule'
+                            disabled={!!fieldValue.deviceGroup}
+                        />
+                    </Grid>
+                    <Grid container item xs={2} alignItems='center' justify='center' style={{paddingTop: 16}}>
                         OR
                     </Grid>
-                    <AutoCompleteRow
-                        name={`${prefix}.deviceGroup`}
-                        label='Trigger Group'
-                        getOptionSelected={(option, value) => option.id === value.id}
-                        getOptionLabel={(option) => option.name}
-                        options={deviceGroups}
-                        loading={deviceGroupsLoading}
-                        helperText='Select a group of devices that should trigger the rule'
-                        disabled={!!fieldValue.device}
-                    />
+                    <Grid item xs={10} />
+                    <Grid container item xs={2} justify='center' alignItems='center'>
+                        <LayersTwoTone fontSize='large' />
+                    </Grid>
+                    <Grid item xs={10}>
+                        <AutoCompleteRow
+                            name={`${prefix}.deviceGroup`}
+                            label='Trigger Group'
+                            getOptionSelected={(option, value) => option.id === value.id}
+                            getOptionLabel={(option) => option.name}
+                            options={deviceGroups}
+                            loading={deviceGroupsLoading}
+                            helperText='Select a group of devices that should trigger the rule'
+                            disabled={!!fieldValue.device}
+                        />
+                    </Grid>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     

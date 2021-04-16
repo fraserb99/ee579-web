@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import React from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 import { compose } from 'recompose';
 import { formContainer } from '../../../infrastructure/form/formContainer';
 import * as actions from '../actions';
@@ -43,7 +44,7 @@ export const AddRulePage = () => {
 
     return (
         <React.Fragment>
-            <Form />
+                <Form />
         </React.Fragment>
     )
 }

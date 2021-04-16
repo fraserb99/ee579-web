@@ -1,4 +1,4 @@
-import { Grid, IconButton, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Avatar, Grid, IconButton, makeStyles, Paper, Typography } from '@material-ui/core';
 import { Save } from '@material-ui/icons';
 import { Form } from 'formik';
 import React from 'react';
@@ -32,7 +32,7 @@ const enhance = compose(
     })
 )
 
-export const RuleForm = enhance(({handleSubmit, ...props}) => {
+export const RuleForm = enhance(({handleSubmit, title, ...props}) => {
     const classes = useStyles();
     useDevices();
     useDeviceGroups();
@@ -42,10 +42,12 @@ export const RuleForm = enhance(({handleSubmit, ...props}) => {
             <Paper className={classes.header}>
                 <Grid container>
                     <Typography variant='h3'>
-                        Add Rule
+                        {title}
+                        <Avatar>
                         <IconButton type='submit'>
                             <Save fontSize='large' color='secondary' />
                         </IconButton>
+                        </Avatar>
                     </Typography>
                 </Grid>
             </Paper>
