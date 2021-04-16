@@ -9,6 +9,7 @@ import { TextRow } from '../../../components/Form/TextRow';
 import { withForm } from '../../../infrastructure/form/withForm';
 import { useDeviceGroups } from '../../DeviceGroups/hooks/useDeviceGroups';
 import { useDevices } from '../../Devices/hooks/useDevices';
+import { ruleValidationSchema } from './validation';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -26,9 +27,11 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
+
+
 const enhance = compose(
     withForm({
-
+        validationSchema: ruleValidationSchema,
     })
 )
 
@@ -36,6 +39,7 @@ export const RuleForm = enhance(({handleSubmit, title, ...props}) => {
     const classes = useStyles();
     useDevices();
     useDeviceGroups();
+    console.log(props.errors);
 
     return (
         <Form onSubmit={handleSubmit}>
