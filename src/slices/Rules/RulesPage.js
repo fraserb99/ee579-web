@@ -31,9 +31,9 @@ export const RulesPage = () => {
         history.push('rules/add');
     }
 
-    if (!rules) return (
+    if (!rules || !rules.length) return (
         <BlankState message="You haven't added any rules yet, add one now to get started!">
-            <IconButton color='secondary' className={classes.addBtn}>
+            <IconButton color='secondary' className={classes.addBtn} onClick={handleAdd}>
                 <Add fontSize='large' />
             </IconButton>
         </BlankState>
