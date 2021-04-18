@@ -1,5 +1,5 @@
 import { colors, Grid, Grow, makeStyles, Paper, Slider, Typography, useTheme } from '@material-ui/core';
-import { DeveloperBoard, Whatshot } from '@material-ui/icons';
+import { DeveloperBoard, LayersRounded, Whatshot } from '@material-ui/icons';
 import React from 'react';
 
 const useStyles = makeStyles(theme => ({
@@ -42,8 +42,18 @@ export const Device = ({type, TypeIcon, children, transitionIn, peripheral}) => 
                     <Grid item container xs={12} md={4} alignItems='center'>
                         <Grid item xs={12} style={{overflow: 'hidden'}}>
                             <Typography className={classes.deviceHeader}>
-                                <DeveloperBoard className={classes.deviceIcon} fontSize='large' />
-                                {peripheral.device.name}
+                                {peripheral.device && 
+                                    <>
+                                        <DeveloperBoard className={classes.deviceIcon} fontSize='large' />
+                                        {peripheral.device.name}
+                                    </>
+                                }
+                                {peripheral.deviceGroup && 
+                                    <>
+                                        <LayersRounded className={classes.deviceIcon} fontSize='large' />
+                                        {peripheral.deviceGroup.name}
+                                    </>
+                                }
                             </Typography>
                             <Typography className={classes.peripheralType}>
                                 <TypeIcon className={classes.deviceIcon} fontSize='large' />
