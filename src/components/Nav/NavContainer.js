@@ -144,6 +144,10 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+  },
+  accountName: {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden'
   }
 }));
 
@@ -327,7 +331,7 @@ export const NavContainer = enhance(({children}) => {
               <ListItemIcon>
                 <AccountCircle fontSize='large' />
               </ListItemIcon>
-              <ListItemText primary={currentUser.name} />
+              <ListItemText primary={currentUser.name} primaryTypographyProps={{className: classes.accountName}} />
               {accountOpen ? <ExpandMore /> : <ExpandLess />}
             </ListItem>
         </List>
