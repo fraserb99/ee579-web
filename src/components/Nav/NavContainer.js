@@ -328,9 +328,7 @@ export const NavContainer = enhance(({children}) => {
                 <AccountCircle fontSize='large' />
               </ListItemIcon>
               <ListItemText primary={currentUser.name} />
-              <ListItemSecondaryAction>
-                {accountOpen ? <ExpandMore /> : <ExpandLess />}
-              </ListItemSecondaryAction>
+              {accountOpen ? <ExpandMore /> : <ExpandLess />}
             </ListItem>
         </List>
         </div>
