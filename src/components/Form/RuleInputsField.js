@@ -83,7 +83,7 @@ const SwitchProperties = ({fieldValue, index, form, ...props}) => {
     )
 }
 
-const AnalogueProperties = ({fieldValue, index, form, handleSetFieldValue, ...props}) => {
+const AnalogueProperties = ({fieldValue, index, form, handleSetFieldValue, min, max, suffix, ...props}) => {
     const prefix = `inputs[${index}]`;
     const [sliderVal, setSliderVal] = useState();
 
@@ -119,13 +119,14 @@ const AnalogueProperties = ({fieldValue, index, form, handleSetFieldValue, ...pr
                 <Grid item xs={12} style={{paddingTop: 24}}>
                     <Slider
                         color='secondary'
-                        min={0}
-                        max={1024}
+                        min={min}
+                        max={max}
                         value={sliderVal || [fieldValue.greaterThan, fieldValue.lessThan]}
                         track={fieldValue.greaterThan < fieldValue.lessThan ? 'normal' : 'inverted'}
                         step={1}
                         valueLabelDisplay="on"
                         aria-labelledby="range-slider"
+                        valueLabelFormat={val =>  `${val}${suffix}`}
                         onChange={handleChange}
                         onChangeCommitted={handleChangeCommit}
                     />
@@ -135,7 +136,7 @@ const AnalogueProperties = ({fieldValue, index, form, handleSetFieldValue, ...pr
                         name={`${prefix}.greaterThan`}
                         label='Greater Than'
                         type='number'
-                        InputProps={{inputProps: {min: 0, max: 1024}}}
+                        InputProps={{inputProps: {min, max}}}
                     />
                 </Grid>
                 <Grid container item xs={2} justify='center' >
@@ -148,12 +149,16 @@ const AnalogueProperties = ({fieldValue, index, form, handleSetFieldValue, ...pr
                         name={`${prefix}.lessThan`}
                         label='Less Than'
                         type='number'
-                        InputProps={{inputProps: {min: 0, max: 1024}}}
+                        InputProps={{inputProps: {min, max}}}
                     />
                 </Grid>
             </Grid>
         </>
     )
+}
+AnalogueProperties.defaultProps = {
+    min: 0,
+    max: 1024
 }
 
 const propertiesMap = {
@@ -172,7 +177,7 @@ const InputProperties = (props) => {
         case 'Potentiometer':
             return <AnalogueProperties {...props} />
         case 'Temperature':
-            return <AnalogueProperties {...props} />
+            return <AnalogueProperties {...props} min={-50} max={100} suffix='°C' />
         default:
             break;
     }
@@ -205,8 +210,8 @@ const initialTypeState = (type, values) => {
         Temperature: {
             "$type": "EE579.Core.Slices.Rules.Models.Inputs.AnalogueValueInputDto, EE579.Core",
             type: 'Temperature',
-            greaterThan: 256,
-            lessThan: 768,
+            greaterThan: 0,
+            lessThan: 50,
             device: values.device,
             deviceGroup: values.deviceGroup,
         }
