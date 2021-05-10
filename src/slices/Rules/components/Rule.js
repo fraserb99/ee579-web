@@ -1,6 +1,7 @@
 import { Button, Collapse, colors, createMuiTheme, Divider, Grid, Grow, Hidden, IconButton, makeStyles, Paper, ThemeProvider, Typography } from '@material-ui/core';
 import { ArrowDownward, ArrowForward, Delete, Edit, ExpandLess, ExpandMore } from '@material-ui/icons';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import { Device } from './Device';
 import { InputDevice } from './InputDevice';
 import { OutputDevice } from './OutputDevice';
@@ -48,9 +49,13 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export const Rule = ({rule}) => {
+export const Rule = ({rule, handleDelete}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = useState();
+    const history = useHistory();
+    const handleEdit = () => {
+        history.push('/rules/edit', { rule })
+    }
 
     const { 
         name,
@@ -59,7 +64,6 @@ export const Rule = ({rule}) => {
     } = rule;
     const extraInputs = inputs.slice(1);
     const extraOutputs = outputs.slice(1);
-    console.log(extraInputs);
 
     return (
         <Paper className={classes.ruleContainer}>
@@ -72,12 +76,12 @@ export const Rule = ({rule}) => {
                     </Grid>
                     <Grid xs={3}>
                         <ThemeProvider theme={actionsTheme}>
-                            <IconButton color='secondary' className={classes.actionBtn}>
+                            <IconButton color='secondary' className={classes.actionBtn} onClick={handleDelete(rule)}>
                                 <Delete />
                             </IconButton>
                         </ThemeProvider>
                         <ThemeProvider theme={actionsTheme}>
-                            <IconButton color='primary' className={classes.actionBtn}>
+                            <IconButton color='primary' className={classes.actionBtn} onClick={handleEdit}>
                                 <Edit />
                             </IconButton>
                         </ThemeProvider>

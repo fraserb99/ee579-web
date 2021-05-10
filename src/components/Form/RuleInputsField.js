@@ -1,7 +1,7 @@
 import { Divider, Grid, IconButton, makeStyles, MenuItem, Paper, Slider, Typography } from '@material-ui/core';
 import { Add, ArrowBackIosRounded, ArrowBackRounded, ArrowForwardIosRounded, DeveloperBoard, Equalizer, Layers, LayersRounded, LayersTwoTone, SwapHorizRounded, SwapVertRounded, Timer, Whatshot } from '@material-ui/icons';
 import { FieldArray, getIn } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 import { selectDeviceGroups } from '../../slices/DeviceGroups/selectors';
@@ -33,6 +33,15 @@ const ButtonPushedProperties = ({fieldValue, index, form, ...props}) => {
                 <Timer fontSize='large' />
             </Grid>
             <Grid item xs={10}>
+                <TextRow
+                    name={`${prefix}.peripheral`}
+                    label='Button Peripheral'
+                    select
+                    defaultValue='Button1'
+                >
+                    <MenuItem value='Button1'>Button 1</MenuItem>
+                    <MenuItem value='Button2'>Button 2</MenuItem>
+                </TextRow>
                 <TextRow
                     name={`${prefix}.duration`}
                     label='Button Pressed Duration'
@@ -97,7 +106,6 @@ const AnalogueProperties = ({fieldValue, index, form, handleSetFieldValue, min, 
     }
 
     const handleChangeCommit = (e, newValue) => {
-        console.log(e);
         const {greaterThan, lessThan} = fieldValue;
         if (greaterThan < lessThan) {
             handleSetFieldValue('greaterThan', newValue[0]);
@@ -126,7 +134,7 @@ const AnalogueProperties = ({fieldValue, index, form, handleSetFieldValue, min, 
                         step={1}
                         valueLabelDisplay="on"
                         aria-labelledby="range-slider"
-                        valueLabelFormat={val =>  `${val}${suffix}`}
+                        valueLabelFormat={val =>  `${val}${suffix || ''}`}
                         onChange={handleChange}
                         onChangeCommitted={handleChangeCommit}
                     />
@@ -191,6 +199,7 @@ const initialTypeState = (type, values) => {
             duration: 0,
             device: values.device,
             deviceGroup: values.deviceGroup,
+            peripheral: 'Button1'
         },
         Switch: {
             "$type": "EE579.Core.Slices.Rules.Models.Inputs.SwitchInputDto, EE579.Core",
@@ -221,6 +230,14 @@ const initialTypeState = (type, values) => {
     return val
 }
 
+export function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
+}
+
 const RuleInput = ({fieldValue, index, ...props}) => {
     const prefix = `inputs[${index}]`;
     const classes = useStyles();
@@ -228,7 +245,7 @@ const RuleInput = ({fieldValue, index, ...props}) => {
     const devicesLoading = useLoading('devices');
     const deviceGroups = useSelector(selectDeviceGroups);
     const deviceGroupsLoading = useLoading('devicegroups');
-
+    const prevValue = usePrevious(fieldValue);
     const { type } = fieldValue;
 
     const InputIcon = inputIconMap[fieldValue.type];
@@ -238,7 +255,8 @@ const RuleInput = ({fieldValue, index, ...props}) => {
     }
 
     useEffect(() => {
-        handleSetFieldValue('', initialTypeState(fieldValue.type, fieldValue));
+        if (prevValue)
+            handleSetFieldValue('', initialTypeState(fieldValue.type, fieldValue));
     }, [fieldValue.type])
 
     const childProps = {
@@ -267,7 +285,6 @@ const RuleInput = ({fieldValue, index, ...props}) => {
                             select
                         >
                             <MenuItem value='ButtonPushed'>Button Pushed</MenuItem>
-                            <MenuItem value='Switch'>Switch Flipped</MenuItem>
                             <MenuItem value='Potentiometer'>Potentiometer</MenuItem>
                             <MenuItem value='Temperature'>Temperature</MenuItem>
                         </TextRow>
@@ -334,7 +351,7 @@ const RuleInput = ({fieldValue, index, ...props}) => {
 const renderRuleInputs = ({...props}) => ({...arrayHelpers}) => {
     return (
         <div>
-            {props.values.inputs && props.values.inputs.map((x, i) => (
+            {props.values && props.values.inputs && props.values.inputs.map((x, i) => (
                 <RuleInput
                     fieldValue={x}
                     index={i}

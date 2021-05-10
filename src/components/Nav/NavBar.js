@@ -128,7 +128,7 @@ export const NavBar = ({handleDrawerToggle, drawerOpen}) => {
     const classes = useStyles();
     const currentTenant = useCurrentTenant();
     const tenantsLoading = useLoading('tenants');
-    console.log(currentTenant);
+    
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, drawerOpen && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>

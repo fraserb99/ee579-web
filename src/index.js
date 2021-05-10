@@ -21,13 +21,10 @@ import { createBrowserHistory } from 'history';
 
 var existingStore = localStorage.getItem('store');
 
-console.log(JSON.parse(existingStore));
 const initialState = existingStore ? 
   { session: new Map({ ...JSON.parse(existingStore).session, state: '' }) }
   :
   {};
-
-console.log(initialState);
 
 export const history = createBrowserHistory();
 

@@ -14,6 +14,5 @@ export const useRules = () => {
     useEffect(() => {
         dispatch(getRules())
     }, [dispatch, currentTenant]);
-    console.log(tenantRules);
     return tenantRules;
 }

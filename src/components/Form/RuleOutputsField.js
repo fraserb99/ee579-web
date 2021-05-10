@@ -226,6 +226,12 @@ const initialTypeState = (type, values) => {
             device: values.device,
             deviceGroup: values.deviceGroup,
         },
+        BuzzerOff: {
+            "$type": "EE579.Core.Slices.Rules.Models.Outputs.BuzzerOffOutputDto, EE579.Core",
+            type: 'BuzzerOff',
+            device: values.device,
+            deviceGroup: values.deviceGroup,
+        },
         BuzzerBeep: {
             "$type": "EE579.Core.Slices.Rules.Models.Outputs.BuzzerBeepOutputDto, EE579.Core",
             type: 'BuzzerBeep',
@@ -329,7 +335,8 @@ const RuleOutput = ({fieldValue, index, remove, ...props}) => {
     }
 
     useEffect(() => {
-        handleSetFieldValue('', initialTypeState(fieldValue.type, fieldValue));
+        if (!fieldValue.$type)
+            handleSetFieldValue('', initialTypeState(fieldValue.type, fieldValue));
     }, [fieldValue.type])
 
     const childProps = {
@@ -370,6 +377,7 @@ const RuleOutput = ({fieldValue, index, remove, ...props}) => {
                                 select
                             >
                                 <MenuItem value='BuzzerOn'>Buzzer - On</MenuItem>
+                                <MenuItem value='BuzzerOff'>Buzzer - Off</MenuItem>
                                 <MenuItem value='BuzzerBeep'>Buzzer - Beep</MenuItem>
                                 <MenuItem value='LedOutput'>Led - Output</MenuItem>
                                 <MenuItem value='LedBlink'>Led - Blink</MenuItem>
@@ -447,7 +455,7 @@ const renderRuleOutputs = ({...props}) => ({push, ...arrayHelpers}) => {
 
     return (
         <div>
-            {props.values.outputs && props.values.outputs.map((x, i) => (
+            {props.values && props.values.outputs && props.values.outputs.map((x, i) => (
                 <RuleOutput
                     key={Math.random}
                     fieldValue={x}

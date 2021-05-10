@@ -126,7 +126,6 @@ export const UsersPage = () => {
     const [item, setItem] = useState();
 
     const handleDelete = (user) => () => {
-        console.log(user);
         setDeleteState({
             open: true,
             deleteText: `Are you sure you want to revoke ${user.name || user.email}'s access to this tenant?`,
@@ -148,8 +147,6 @@ export const UsersPage = () => {
         setRoleOpen(false)
         setTimeout(() => setItem(null), 1000);
     }
-
-    console.log(roleOpen);
 
     return (
         <React.Fragment>

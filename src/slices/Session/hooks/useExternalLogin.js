@@ -22,7 +22,6 @@ export const useExternalLogin = (authority, clientId, provider) => {
     const handleExternalSignIn = async () => {
         try {
             const user = await userManager.signinCallback();
-            console.log(user);
             dispatch(externalSignIn(user.id_token));
         } catch (e) {
             console.log(e);

@@ -26,31 +26,81 @@ export const buttonDurationMarks = [
         label: null
     },
     {
-        value: 1000,
+        value: 2000,
         label: null
     },
     {
-        value: 5000,
+        value: 10000,
         label: null
     }
 ]
-const buttonPushedFormatter = (peripheral) => (
-    <Typography variant='caption'>
-        <Slider
-            marks={buttonDurationMarks}
-            value={peripheral.duration}
-            valueLabelDisplay="on"
-            valueLabelFormat={(value, index) => `>${value/1000}s`}
-            max={5000}
-            step={null}
-            style={{paddingBottom: 0}}
-        />
-        Duration Held
-    </Typography>
-)
+const upperDuration = {
+    '0': 2000,
+    '2000': 10000
+}
+const buttonPushedFormatter = (peripheral) => {
+    const {duration} = peripheral;
+    return (
+        <Typography variant='caption'>
+            <Slider
+                marks={buttonDurationMarks}
+                value={duration >= 10000 ? duration : [duration, upperDuration[duration]]}
+                valueLabelDisplay="on"
+                valueLabelFormat={(value, index) => `${value/1000}s`}
+                max={10000}
+                step={null}
+                style={{paddingBottom: 0}}
+                track={duration >= 10000 ? 'inverted' : 'normal'}
+            />
+            Duration Held
+        </Typography>
+    )
+}
+
+const rangeOpts = {
+    Temperature: {
+        min: -50,
+        max: 100,
+        suffix: '°C',
+    },
+    Potentiometer: {
+        min: 0,
+        max: 1024,
+        suffix: ''
+    }
+}
+
+const rangeFormatter = (input) => {
+    const {
+        min,
+        max,
+        suffix
+    } = rangeOpts[input.type]
+
+    const { greaterThan, lessThan } = input;
+
+    return (
+        <Typography variant='caption'>
+            <Slider
+                marks={buttonDurationMarks}
+                value={[greaterThan, lessThan]}
+                valueLabelDisplay="on"
+                valueLabelFormat={(value, index) => `${value}${suffix}`}
+                track={greaterThan > lessThan ? 'inverted' : 'normal'}
+                min={min}
+                max={max}
+                step={null}
+                style={{paddingBottom: 0}}
+            />
+            Duration Held
+        </Typography>
+    )
+}
 
 const inputDisplayMap = {
-    ButtonPushed: buttonPushedFormatter
+    ButtonPushed: buttonPushedFormatter,
+    Temperature: rangeFormatter,
+    Potentiometer: rangeFormatter
 }
 
 export const inputDisplayFormatter = peripheral => {

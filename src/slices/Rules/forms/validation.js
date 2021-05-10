@@ -2,7 +2,6 @@ import { getIn } from 'formik';
 import * as Yup from 'yup';
 
 const oneOf = otherKey => (value, testContext) => {
-    console.log(testContext)
     const otherValue = getIn(testContext.parent, otherKey);
     return value || otherValue;
 }

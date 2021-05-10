@@ -27,3 +27,11 @@ export function getRules() {
         schema: RulesSchema
     });
 }
+
+export const DELETE_RULE = 'DELETE_RULE';
+export function deleteRule(id) {
+    return apiCall(DELETE_RULE, appendUrl(`rules/${id}`), {
+        successText: "Rule Deleted",
+        path: ['rules', id]
+    }, null, 'DELETE');
+}

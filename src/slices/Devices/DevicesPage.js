@@ -114,7 +114,6 @@ export const DevicesPage = () => {
     const [item, setItem] = useState();
 
     const handleDelete = (device) => () => {
-        console.log(device);
         setDeleteState({
             open: true,
             deleteText: `Are you sure you want to remove ${device.name} from this tenant?`,

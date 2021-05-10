@@ -33,7 +33,6 @@ const useStyles = makeStyles(theme => ({
 
 export const Device = ({type, TypeIcon, children, transitionIn, peripheral}) => {
     const classes = useStyles();
-    console.log(peripheral)
 
     return (
         <Grow in={transitionIn} >

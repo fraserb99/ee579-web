@@ -86,7 +86,6 @@ export const DeviceGroupsPage = () => {
     const [item, setItem] = useState();
 
     const handleDelete = (deviceGroup) => () => {
-        console.log(deviceGroup);
         setDeleteState({
             open: true,
             deleteText: `Are you sure you want to delete ${deviceGroup.name}?`,

@@ -7,7 +7,7 @@ export default store => next => action => {
 		const { form } = action.meta;
 		if (action.payload.response) {
 			const { errors } = action.payload.response;
-			console.log(form);
+			
 			if (errors) {
 				errors.forEach(x => {
 					form.setFieldError(x.field, x.error)

@@ -50,7 +50,6 @@ const ClaimStep = ({...props}) => {
         setShowAdd(true);
     }
     const handleCloseAdd = () => setShowAdd(false);
-    console.log(devices);
 
     return (
         <>

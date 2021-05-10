@@ -18,7 +18,6 @@ function* signInSuccess(action) {
 }
 
 function* signUpSuccess(action) {
-    console.log(action);
     history.push('/account-created');
 }
 

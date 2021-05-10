@@ -26,8 +26,6 @@ export const DeviceGroupForm = enhance(({handleSubmit, handleClose, submitText, 
     const devicesLoading = useSelector(selectIsLoading('devices'));
     const devices = useDevices();
 
-    console.log(props.values);
-
     return (
         <Form onSubmit={handleSubmit}>
             <DialogContent>
