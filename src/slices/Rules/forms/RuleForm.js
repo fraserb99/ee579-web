@@ -93,7 +93,7 @@ export const RuleForm = enhance(({handleSubmit, title, formEntity, ...props}) =>
     const classes = useStyles();
     useDevices();
     useDeviceGroups();
-    console.log(props);
+    // console.log(props);
 
     const handleReset = () => {
         props.setValues(formEntity);

@@ -8,6 +8,7 @@ import { selectDeviceGroups } from '../../slices/DeviceGroups/selectors';
 import { selectDevices } from '../../slices/Devices/selectors';
 import { outputIconMap } from '../../slices/Rules/formatters/outputFormatters';
 import { AutoCompleteRow } from './AutocompleteRow';
+import { usePrevious } from './RuleInputsField';
 import { TextRow } from './TextRow';
 
 const useStyles = makeStyles(theme => ({
@@ -76,8 +77,8 @@ const BuzzerBeepProperties = ({fieldValue, index, form, ...props}) => {
 const LedPeriodProperties = ({fieldValue, index, form, handleSetFieldValue, ...props}) => {
     const prefix = `outputs[${index}]`;
     useEffect(() => {
-        handleSetFieldValue('colour', null);
-    }, fieldValue.peripheral)
+        // handleSetFieldValue('colour', null);
+    }, [fieldValue.peripheral])
 
     return (
         <>
@@ -164,7 +165,7 @@ const LedProperties = ({fieldValue, index, form, handleSetFieldValue, ...props})
     const prefix = `outputs[${index}]`;
     useEffect(() => {
         handleSetFieldValue('colour', null);
-    }, fieldValue.peripheral)
+    }, [fieldValue.peripheral])
 
     return (
         <>
@@ -319,6 +320,7 @@ const RuleOutput = ({fieldValue, index, remove, ...props}) => {
     const deviceGroups = useSelector(selectDeviceGroups);
     const deviceGroupsLoading = useLoading('devicegroups');
     const [show, setShow] = useState(true);
+    const prevValue = usePrevious(fieldValue);
 
     const InputIcon = outputIconMap[fieldValue.type];
 
@@ -335,7 +337,7 @@ const RuleOutput = ({fieldValue, index, remove, ...props}) => {
     }
 
     useEffect(() => {
-        if (!fieldValue.$type)
+        if (prevValue)
             handleSetFieldValue('', initialTypeState(fieldValue.type, fieldValue));
     }, [fieldValue.type])
 
