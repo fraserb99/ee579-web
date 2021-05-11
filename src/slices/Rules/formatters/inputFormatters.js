@@ -1,5 +1,15 @@
-import { Slider, Typography } from "@material-ui/core";
-import { Power, Refresh, ToggleOn, TouchApp, Whatshot } from "@material-ui/icons";
+import { Button, Grid, makeStyles, Slider, Typography } from "@material-ui/core";
+import { FileCopy, Language, Power, Refresh, ToggleOn, TouchApp, Whatshot } from "@material-ui/icons";
+import copy from 'clipboard-copy';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { showSuccessSnackbar } from "../../../components/Snackbar/actions";
+
+const useStyles = makeStyles(theme => ({
+    copyContainer: {
+        marginTop: -theme.spacing(4.5)
+    }
+}))
 
 const inputTypeMap = {
     ButtonPushed: 'Button Pushed',
@@ -11,7 +21,8 @@ export const inputIconMap = {
     Switch: ToggleOn,
     Temperature: Whatshot,
     Potentiometer: Refresh,
-    Power: Power
+    Power: Power,
+    Webhook: Language
 }
 
 export const inputTypeFormatters = (type) => {
@@ -97,10 +108,32 @@ const rangeFormatter = (input) => {
     )
 }
 
+const webHookFormatter = (input) => (
+    <WebHook hookInput={input} />
+)
+
+const WebHook = ({hookInput}) => {
+    const dispatch = useDispatch();
+
+    const handleCopy = () => {
+        copy(hookInput.url);
+        dispatch(showSuccessSnackbar('Url copied'));
+    }
+
+    return (
+        <Grid container justify='center' style={{marginTop: -36}}>
+            <Button variant='contained' color='primary' onClick={handleCopy}>
+                Copy Webhook Url{' '}<FileCopy />
+            </Button>
+        </Grid>
+    )
+}
+
 const inputDisplayMap = {
     ButtonPushed: buttonPushedFormatter,
     Temperature: rangeFormatter,
-    Potentiometer: rangeFormatter
+    Potentiometer: rangeFormatter,
+    Webhook: webHookFormatter
 }
 
 export const inputDisplayFormatter = peripheral => {

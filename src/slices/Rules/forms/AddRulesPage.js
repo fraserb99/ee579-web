@@ -14,12 +14,14 @@ const enhance = compose(
         (state, props) => ({
             name: '',
             inputs: [{
+                "$type": "EE579.Core.Slices.Rules.Models.Inputs.ButtonPushedInputDto, EE579.Core",
                 type: 'ButtonPushed',
                 duration: 0,
                 device: null,
                 deviceGroup: null
             }],
             outputs: [{
+                "$type": "EE579.Core.Slices.Rules.Models.Outputs.BuzzerOnOutputDto, EE579.Core",
                 type: 'BuzzerOn',
                 duration: 5000,
                 device: null,

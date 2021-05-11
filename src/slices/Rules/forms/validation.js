@@ -2,6 +2,10 @@ import { getIn } from 'formik';
 import * as Yup from 'yup';
 
 const oneOf = otherKey => (value, testContext) => {
+    const type = getIn(testContext.parent, 'type');
+    if (type === 'Webhook')
+        return true;
+
     const otherValue = getIn(testContext.parent, otherKey);
     return value || otherValue;
 }

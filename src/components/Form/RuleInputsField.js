@@ -187,7 +187,7 @@ const InputProperties = (props) => {
         case 'Temperature':
             return <AnalogueProperties {...props} min={-50} max={100} suffix='°C' />
         default:
-            break;
+            return <div />;
     }
 }
 
@@ -223,6 +223,12 @@ const initialTypeState = (type, values) => {
             lessThan: 50,
             device: values.device,
             deviceGroup: values.deviceGroup,
+        },
+        Webhook: {
+            "$type": "EE579.Core.Slices.Rules.Models.Inputs.WebhookInputDto, EE579.Core",
+            type: 'Webhook',
+            device: null,
+            deviceGroup: null,
         }
     });
 
@@ -287,6 +293,7 @@ const RuleInput = ({fieldValue, index, ...props}) => {
                             <MenuItem value='ButtonPushed'>Button Pushed</MenuItem>
                             <MenuItem value='Potentiometer'>Potentiometer</MenuItem>
                             <MenuItem value='Temperature'>Temperature</MenuItem>
+                            <MenuItem value='Webhook'>WebHook</MenuItem>
                         </TextRow>
                     </Grid>
                     <InputProperties {...childProps} />
@@ -296,50 +303,54 @@ const RuleInput = ({fieldValue, index, ...props}) => {
                     {type === 'Potentiometer' && <AnalogueProperties {...childProps} />}
                     {type === 'Temperature' && <AnalogueProperties {...childProps} />} */}
                 </Grid>
-                <Grid item xs={12} className={classes.divider}>
-                    <Divider />
-                </Grid>
-                <Grid container item xs={12} spacing={2}>
-                    <Grid container item xs={12}>
-                        <Typography variant='subtitle'>
-                            Trigger Device(s)
-                        </Typography>
-                    </Grid>
-                    <Grid container item xs={2} justify='center' alignItems='center'>
-                        <DeveloperBoard fontSize='large' />
-                    </Grid>
-                    <Grid item xs={10}>
-                        <AutoCompleteRow
-                            name={`${prefix}.device`}
-                            label='Trigger Device'
-                            getOptionSelected={(option, value) => option.id === value.id}
-                            getOptionLabel={(option) => option.name}
-                            options={devices}
-                            loading={devicesLoading}
-                            helperText='Select a device you would like to trigger the rule'
-                            disabled={!!fieldValue.deviceGroup}
-                        />
-                    </Grid>
-                    <Grid container item xs={2} alignItems='center' justify='center' style={{paddingTop: 16}}>
-                        OR
-                    </Grid>
-                    <Grid item xs={10} />
-                    <Grid container item xs={2} justify='center' alignItems='center'>
-                        <LayersTwoTone fontSize='large' />
-                    </Grid>
-                    <Grid item xs={10}>
-                        <AutoCompleteRow
-                            name={`${prefix}.deviceGroup`}
-                            label='Trigger Group'
-                            getOptionSelected={(option, value) => option.id === value.id}
-                            getOptionLabel={(option) => option.name}
-                            options={deviceGroups}
-                            loading={deviceGroupsLoading}
-                            helperText='Select a group of devices that should trigger the rule'
-                            disabled={!!fieldValue.device}
-                        />
-                    </Grid>
-                </Grid>
+                {type !== 'Webhook' &&
+                    <>
+                        <Grid item xs={12} className={classes.divider}>
+                            <Divider />
+                        </Grid>
+                        <Grid container item xs={12} spacing={2}>
+                            <Grid container item xs={12}>
+                                <Typography variant='subtitle'>
+                                    Trigger Device(s)
+                                </Typography>
+                            </Grid>
+                            <Grid container item xs={2} justify='center' alignItems='center'>
+                                <DeveloperBoard fontSize='large' />
+                            </Grid>
+                            <Grid item xs={10}>
+                                <AutoCompleteRow
+                                    name={`${prefix}.device`}
+                                    label='Trigger Device'
+                                    getOptionSelected={(option, value) => option.id === value.id}
+                                    getOptionLabel={(option) => option.name}
+                                    options={devices}
+                                    loading={devicesLoading}
+                                    helperText='Select a device you would like to trigger the rule'
+                                    disabled={!!fieldValue.deviceGroup}
+                                />
+                            </Grid>
+                            <Grid container item xs={2} alignItems='center' justify='center' style={{paddingTop: 16}}>
+                                OR
+                            </Grid>
+                            <Grid item xs={10} />
+                            <Grid container item xs={2} justify='center' alignItems='center'>
+                                <LayersTwoTone fontSize='large' />
+                            </Grid>
+                            <Grid item xs={10}>
+                                <AutoCompleteRow
+                                    name={`${prefix}.deviceGroup`}
+                                    label='Trigger Group'
+                                    getOptionSelected={(option, value) => option.id === value.id}
+                                    getOptionLabel={(option) => option.name}
+                                    options={deviceGroups}
+                                    loading={deviceGroupsLoading}
+                                    helperText='Select a group of devices that should trigger the rule'
+                                    disabled={!!fieldValue.device}
+                                />
+                            </Grid>
+                        </Grid>
+                    </>
+                }
                 <Grid item xs={12} md={6}>
                     
                 </Grid>
