@@ -24,7 +24,10 @@ export const userFormSchema = Yup.object().shape({
         .required('Email is required')
         .email('Please enter a valid email address'),
     password: Yup.string()
-        .required('Password is required'),
+        .required('Password is required')
+        .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*-])(?=.{6,})/, 
+            'Password must be at least 6 characters and contain an uppercase character, digit, and a special character'),
     passwordConfirm: Yup.string()
         .oneOf([Yup.ref('password')], 'Passwords must match')
 });

@@ -22,6 +22,9 @@ export const userFormSchema = Yup.object().shape({
         .email('Please enter a valid email address'),
     password: Yup.string()
         .required('Password is required')
+        .matches(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*-])(?=.{6,})/, 
+          'Password must be at least 6 characters and contain an uppercase character, digit, and a special character')
 });
 
 const enhance = compose(
