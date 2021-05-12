@@ -63,6 +63,30 @@ const ledPeriodFormatter = peripheral => (
     </React.Fragment>
 )
 
+const ledFadeFormatter = peripheral => (
+    <React.Fragment>
+        <Typography variant='caption' gutterBottom>
+            <Slider
+                value={peripheral.period}
+                defaultValue={0}
+                valueLabelDisplay="on"
+                valueLabelFormat={(value, index) => `${value/1000}s`}
+                min={100}
+                max={5000}
+                step={100}
+                style={{paddingBottom: 0}}
+            />
+            Period
+        </Typography>
+        <Typography variant='body2'>
+            <b>Fade Type:</b> {peripheral.value ? 'Fade On' : 'Fade Off'}
+        </Typography>
+        <Typography variant='body2'>
+            {peripheral.colour && <span><b>Colour:</b> {peripheral.colour}</span>}
+        </Typography>
+    </React.Fragment>
+)
+
 const ledOutputFormatter = peripheral => (
     <React.Fragment>
         <Typography variant='body1'>
@@ -141,7 +165,7 @@ const outputDisplayMap = {
     BuzzerOn: buzzerOnFormatter,
     LedBlink: ledPeriodFormatter,
     LedBreathe: ledPeriodFormatter,
-    LedFade: ledPeriodFormatter,
+    LedFade: ledFadeFormatter,
     LedOutput: ledOutputFormatter,
     LedCycle: ledCycleFormatter,
     BuzzerBeep: buzzerBeepFormatter,

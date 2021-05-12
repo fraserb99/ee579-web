@@ -130,6 +130,71 @@ const LedPeriodProperties = ({fieldValue, index, form, handleSetFieldValue, ...p
     )
 }
 
+const LedFadeProperties = ({fieldValue, index, form, handleSetFieldValue, ...props}) => {
+    const prefix = `outputs[${index}]`;
+    useEffect(() => {
+        // handleSetFieldValue('colour', null);
+    }, [fieldValue.peripheral])
+
+    return (
+        <>
+            <Grid container item xs={2} justify='center' alignItems='center' />
+            <Grid container item xs={10} spacing={2}>
+                <Grid item xs={6}>
+                    <TextRow
+                        name={`${prefix}.peripheral`}
+                        label='Led'
+                        select
+                        defaultValue='Led1'
+                    >
+                        <MenuItem value='Led1'>Led 1</MenuItem>
+                        <MenuItem value='Led2'>Led 2</MenuItem>
+                        <MenuItem value='Led3'>Led 3</MenuItem>
+                    </TextRow>
+                </Grid>
+                <Grid item xs={6}>
+                    {fieldValue.peripheral === 'Led3' && 
+                        <TextRow
+                            name={`${prefix}.colour`}
+                            label='Led Colour'
+                            select
+                            value={fieldValue.colour}
+                        >
+                            <MenuItem value='Red'>Red</MenuItem>
+                            <MenuItem value='Green'>Green</MenuItem>
+                            <MenuItem value='Blue'>Blue</MenuItem>
+                            <MenuItem value='Purple'>Purple</MenuItem>
+                            <MenuItem value='Yellow'>Yellow</MenuItem>
+                            <MenuItem value='White'>White</MenuItem>
+                        </TextRow>}
+                </Grid>
+            </Grid>
+            <Grid container item xs={2} justify='center' alignItems='center' />
+            <Grid container item xs={10} spacing={2}>
+                <Grid item xs={6}>
+                    <TextRow
+                        name={`${prefix}.value`}
+                        label='Fade Type'
+                        select
+                        defaultValue='true'
+                    >
+                        <MenuItem value={true}>Fade On</MenuItem>
+                        <MenuItem value={false}>Fade Off</MenuItem>
+                    </TextRow>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextRow
+                        name={`${prefix}.period`}
+                        label='Period (ms)'
+                        type='number'
+                        InputProps={{inputProps: { min: 100, max: 5000 }}}
+                    />
+                </Grid>
+            </Grid>
+        </>
+    )
+}
+
 const LedCycleProperties = ({fieldValue, index, form, ...props}) => {
     const prefix = `outputs[${index}]`;
 
@@ -297,9 +362,10 @@ const initialTypeState = (type, values) => {
             deviceGroup: values.deviceGroup,
         },
         LedFade: {
-            "$type": "EE579.Core.Slices.Rules.Models.Outputs.LedPeriodOutputDto, EE579.Core",
+            "$type": "EE579.Core.Slices.Rules.Models.Outputs.LedFadeOutputDto, EE579.Core",
             type: 'LedFade',
             period: 2000,
+            value: true,
             peripheral: 'Led1',
             colour: null,
             device: values.device,
@@ -336,7 +402,7 @@ const renderProperties = props => {
         case 'LedBreathe':
             return <LedPeriodProperties {...props} />
         case 'LedFade':
-            return <LedPeriodProperties {...props} />
+            return <LedFadeProperties {...props} />
         case 'LedBlink':
             return <LedPeriodProperties {...props} />
         case 'LedCycle':
