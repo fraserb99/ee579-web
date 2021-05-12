@@ -1,6 +1,6 @@
 import React from 'react';
 import { Slider, Typography } from "@material-ui/core";
-import { Flare, Power, Refresh, ToggleOn, TouchApp, VolumeMute, VolumeOff, VolumeUp, Whatshot } from "@material-ui/icons";
+import { Flare, Language, Power, Refresh, ToggleOn, TouchApp, VolumeMute, VolumeOff, VolumeUp, Whatshot } from "@material-ui/icons";
 
 const outputTypeMap = {
     ButtonPushed: 'Button Pushed',
@@ -16,6 +16,7 @@ export const outputIconMap = {
     BuzzerOn: VolumeUp,
     BuzzerBeep: VolumeUp,
     BuzzerOff: VolumeOff,
+    Webhook: Language
 }
 
 export const outputTypeFormatters = (type) => {
@@ -57,7 +58,7 @@ const ledPeriodFormatter = peripheral => (
             Period
         </Typography>
         <Typography variant='body2'>
-            {peripheral.colour && `Colour: ${peripheral.colour}`}
+            {peripheral.colour && <span><b>Colour:</b> {peripheral.colour}</span>}
         </Typography>
     </React.Fragment>
 )
@@ -65,10 +66,10 @@ const ledPeriodFormatter = peripheral => (
 const ledOutputFormatter = peripheral => (
     <React.Fragment>
         <Typography variant='body1'>
-            State: {peripheral.value ? 'On' : 'Off'}
+            <b>State:</b> {peripheral.value ? 'On' : 'Off'}
         </Typography>
         <Typography variant='body2'>
-            {peripheral.colour && `Colour: ${peripheral.colour}`}
+            {peripheral.colour && <span><b>Colour:</b> {peripheral.colour}</span>}
         </Typography>
     </React.Fragment>
 )
@@ -89,7 +90,7 @@ const ledCycleFormatter = peripheral => (
             Period
         </Typography>
         <Typography variant='body1'>
-            Direction: {peripheral.direction ? 'Forwards' : 'Backwards'}
+            <b>Direction:</b> {peripheral.direction ? 'Forwards' : 'Backwards'}
         </Typography>
     </React.Fragment>
 )
@@ -125,6 +126,17 @@ const buzzerBeepFormatter = peripheral => (
     </React.Fragment>
 )
 
+const webhookFormatter = (hookOutput) => (
+    <div style={{marginTop: -36}}>
+        <Typography variant='body1' style={{overflow: 'hidden', textOverflow: 'ellipsis', lineBreak: 'anywhere'}}>
+            <b>Url:</b> {hookOutput.url}
+        </Typography>
+        <Typography variant='body1'>
+            <b>Forward Message:</b> {hookOutput.forwardMessage ? 'True' : 'False'}
+        </Typography>
+    </div>
+)
+
 const outputDisplayMap = {
     BuzzerOn: buzzerOnFormatter,
     LedBlink: ledPeriodFormatter,
@@ -132,7 +144,8 @@ const outputDisplayMap = {
     LedFade: ledPeriodFormatter,
     LedOutput: ledOutputFormatter,
     LedCycle: ledCycleFormatter,
-    BuzzerBeep: buzzerBeepFormatter
+    BuzzerBeep: buzzerBeepFormatter,
+    Webhook: webhookFormatter
 }
 
 export const outputDisplayFormatter = peripheral => {

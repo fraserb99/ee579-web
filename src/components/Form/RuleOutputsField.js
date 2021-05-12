@@ -1,13 +1,15 @@
 import { Button, Collapse, Divider, Grid, Grow, IconButton, makeStyles, MenuItem, Paper, Typography } from '@material-ui/core';
-import { DeveloperBoardTwoTone, LayersTwoTone, Remove, Timer } from '@material-ui/icons';
+import { DeveloperBoardTwoTone, Help, LayersTwoTone, Remove, Timer } from '@material-ui/icons';
 import { FieldArray } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { useLoading } from '../../infrastructure/api/hooks/useLoading';
 import { selectDeviceGroups } from '../../slices/DeviceGroups/selectors';
 import { selectDevices } from '../../slices/Devices/selectors';
 import { outputIconMap } from '../../slices/Rules/formatters/outputFormatters';
 import { AutoCompleteRow } from './AutocompleteRow';
+import { CheckboxRow } from './CheckboxRow';
 import { usePrevious } from './RuleInputsField';
 import { TextRow } from './TextRow';
 
@@ -218,6 +220,33 @@ const LedProperties = ({fieldValue, index, form, handleSetFieldValue, ...props})
     )
 }
 
+const WebhookProperties = ({index}) => {
+    const prefix = `outputs[${index}]`;
+
+    return (
+        <>
+            <Grid container item xs={2} justify='center' alignItems='center' />
+            <Grid container item xs={10} spacing={2}>
+                <Grid item xs={12}>
+                    <TextRow
+                        name={`${prefix}.url`}
+                        label='Url'
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <CheckboxRow
+                        name={`${prefix}.forwardMessage`}
+                        label='Forward Message'
+                    />
+                    <IconButton href='https://docs.ee579-group4.net/webhooks' target='_blank'>
+                        <Help fontSize='small' />
+                    </IconButton>
+                </Grid>
+            </Grid>
+        </>
+    )
+}
+
 const initialTypeState = (type, values) => {
     const typeValues = ({
         BuzzerOn: {
@@ -285,6 +314,13 @@ const initialTypeState = (type, values) => {
             device: values.device,
             deviceGroup: values.deviceGroup,
         },
+        Webhook: {
+            "$type": "EE579.Core.Slices.Rules.Models.Outputs.WebhookOutputDto, EE579.Core",
+            type: 'Webhook',
+            forwardMessage: false,
+            device: null,
+            deviceGroup: null,
+        },
     });
 
     const val = typeValues[type];
@@ -307,6 +343,8 @@ const renderProperties = props => {
             return <LedCycleProperties {...props} />
         case 'LedOutput':
             return <LedProperties {...props} />
+        case 'Webhook':
+            return <WebhookProperties {...props} />
         default:
             return <div></div>;
     }
@@ -386,6 +424,7 @@ const RuleOutput = ({fieldValue, index, remove, ...props}) => {
                                 <MenuItem value='LedBreathe'>Led - Breathe</MenuItem>
                                 <MenuItem value='LedFade'>Led - Fade</MenuItem>
                                 <MenuItem value='LedCycle'>Led - Cycle</MenuItem>
+                                <MenuItem value='Webhook'>Webhook</MenuItem>
                             </TextRow>
                         </Grid>
                         {renderProperties(childProps)}
