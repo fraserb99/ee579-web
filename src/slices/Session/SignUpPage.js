@@ -68,7 +68,7 @@ export const SignUpPage = () => {
             style={{...socialButtonStyles, marginTop: '8px'}}
             align='center'
             text='Sign In with Google' 
-            onClick={useGoogleLogin}
+            onClick={googleLogin}
             type='button'
           />
           <MicrosoftLoginButton
