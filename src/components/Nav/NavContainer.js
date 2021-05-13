@@ -233,7 +233,7 @@ export const NavContainer = enhance(({children}) => {
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%'}}>
         <div>
         <List>
-            <ListItem 
+            {/* <ListItem 
               button 
               selected={location.pathname === '/'} 
               onClick={() => history.push('/')}
@@ -242,7 +242,7 @@ export const NavContainer = enhance(({children}) => {
                 <Dashboard />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
-            </ListItem>
+            </ListItem> */}
             <ListItem 
               button 
               selected={location.pathname.startsWith('/rules')} 

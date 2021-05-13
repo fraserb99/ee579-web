@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import { AddDevicePage } from '../../slices/Devices/AddDevicePage';
 import { RulesPage } from '../../slices/Rules/RulesPage';
 import { UsersPage } from '../../slices/Users/UsersPage';
@@ -21,6 +21,7 @@ export const AuthedRoutes = () => {
                 <Route path='/devices' component={DevicesPage} />
                 <Route path='/groups' component={DeviceGroupsPage} />
                 <Route path='/users' component={UsersPage} />
+                <Redirect path='/' to='/rules' />
             </Switch>
             <DeleteDialog />
         </>
